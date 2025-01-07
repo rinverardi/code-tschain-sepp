@@ -1,10 +1,31 @@
 {
   "compilerOptions": {
-    "types": ["mocha", "chai"],
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["es2015"],
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["DOM", "es2015"],
     "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
     "target": "es6",
-    "esModuleInterop": true
-  }
+    "plugins": [{ "name": "next" }],
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["mocha", "chai"]
+  },
+  "exclude": [
+    "migrations",
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

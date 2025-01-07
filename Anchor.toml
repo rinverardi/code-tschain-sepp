@@ -4,8 +4,11 @@
 resolution = true
 skip-lint = false
 
+[programs.devnet]
+tschain_sepp = "GPtKmrosprCcr2rUUktPuS5o1ro9RL5222A7BvQ96fB7"
+
 [programs.localnet]
-tschain_sepp = "67azxiUdpSwcaHFDZNXQJPc6yi1VrfeazxPnZiNiywhD"
+tschain_sepp = "GPtKmrosprCcr2rUUktPuS5o1ro9RL5222A7BvQ96fB7"
 
 [registry]
 url = "https://api.apr.dev"
