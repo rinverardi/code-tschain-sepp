@@ -1,5 +1,11 @@
 # Tschain Sepp
 
+## Demo
+
+[Play the game in your browser!](https://tschain-sepp.i7i.ch)
+
+Make sure your wallet is connected to Solana's Devnet.
+
 ## Development
 
 ### Prerequisites
