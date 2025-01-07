@@ -1,0 +1,11 @@
+setEnvironmentVariable AVM_HOME ~/.avm
+setEnvironmentVariable CARGO_HOME ~/.cargo
+setEnvironmentVariable SOLANA_HOME ~/.local/share/solana/install/active_release
+
+appendEnvironmentVariable PATH : "$AVM_HOME/bin"
+appendEnvironmentVariable PATH : "$CARGO_HOME/bin"
+appendEnvironmentVariable PATH : "$SOLANA_HOME/bin"
+
+checkDirectory $AVM_HOME
+checkDirectory $CARGO_HOME
+checkDirectory $SOLANA_HOME
