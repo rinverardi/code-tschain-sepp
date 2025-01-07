@@ -45,10 +45,10 @@ Test the on-chain program:
 
 	$ anchor test
 
-Deploy the on-chain program:
+Deploy the on-chain program to Solana's Devnet:
 
 	$ anchor build
-	$ anchor deploy
+	$ anchor deploy --provider.cluster devnet
 
 Close the on-chain program:
 
@@ -74,7 +74,7 @@ Fix the code style:
 
 Run the web app for development purposes:
 
-	$ yarn next dev
+	$ yarn next
 
 Run the web app for production purposes:
 
