@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchGame } from "@components/game_account";
+import { deriveAddress, fetchGame } from "@components/game_account";
 import { makeProgram } from "@components/game_program";
 import { inputId } from "@components/id";
 import { useParams } from "next/navigation";
@@ -14,12 +14,13 @@ const Page = () => {
   const [dump, setDump] = useState("");
   const [error, setError] = useState("");
 
+  const id = inputId(params.id);
   const program = makeProgram(connection);
 
   useEffect(() => {
-    const id = inputId(params.id);
+    const address = deriveAddress(program, id);
 
-    fetchGame(program, id)
+    fetchGame(address, program)
       .then((game) => setDump(JSON.stringify(game, null, 2)))
       .catch(() => setError("Cannot fetch the game!"));
   }, []);

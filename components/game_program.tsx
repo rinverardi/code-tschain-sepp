@@ -1,5 +1,5 @@
 import { makeAnchorProvider } from "@components/anchor";
-import { fetchGame } from "@components/game_account";
+import { deriveAddress, fetchGame } from "@components/game_account";
 import { toggleProgress } from "@components/progress";
 import { BN, Program } from "@coral-xyz/anchor";
 import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
@@ -14,7 +14,8 @@ export async function callAbort(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
 
   try {
-    const game = await fetchGame(program, id);
+    const address = deriveAddress(program, id);
+    const game = await fetchGame(address, program);
 
     const remainingAccounts = game.players
       .slice(1)

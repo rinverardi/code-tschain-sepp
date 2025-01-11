@@ -1,31 +1,50 @@
 "use client";
 
-import { fetchGame } from "@components/game_account";
+import { deriveAddress, fetchGame, watchGame } from "@components/game_account";
 import { makeProgram } from "@components/game_program";
 import { inputId, outputId, outputIdOr } from "@components/id";
+import { IdlAccounts } from "@coral-xyz/anchor";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { TschainSepp } from "../../../../target/types/tschain_sepp";
+
+type GameAccount = IdlAccounts<TschainSepp>["game"];
 
 const Page = () => {
   const { connection } = useConnection();
   const params = useParams<{ id: string }>();
+  const router = useRouter();
 
   const [error, setError] = useState("");
   const [players, setPlayers] = useState(["", "", "", ""]);
 
   const id = inputId(params.id);
   const program = makeProgram(connection);
+  const address = deriveAddress(program, id);
+
+  watchGame(address, connection, program, update);
 
   useEffect(() => {
-    fetchGame(program, id)
-      .then((game) => {
-        const players = game.players.map((player) => player ? player.toString() : "");
-
-        setPlayers(players);
-      })
+    fetchGame(address, program)
+      .then(update)
       .catch(() => setError("Cannot fetch the game!"));
   }, []);
+
+  function update(game: GameAccount): void {
+    if (game.status.aborted) {
+      router.push("../../..");
+    } else if (game.status.ended) {
+      router.push("../../../post-game/" + outputId(id));
+    } else if (game.status.started) {
+      router.push("../../../in-game/" + outputId(id));
+    } else {
+      const players = game.players.map((player) => player ? player.toString() : "");
+
+      setPlayers(players);
+    }
+  }
 
   return <>
     <h1>Waiting for Oponnents</h1>
