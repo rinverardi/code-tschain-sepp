@@ -33,12 +33,15 @@ const Page = () => {
   }
 
   function handleJoin() {
-    if (!id.length) {
-      setError("Please enter a game ID!");
-    } else if (wallet.connected) {
-      joinGame(program, id)
-        .then(() => router.push("joining/" + id))
-        .catch(() => setError("Cannot join the game!"));
+    if (wallet.connected) {
+      if (id.length) {
+        setError("");
+
+        callJoin(program, id)
+          .then(() => router.push("joining/" + id))
+          .catch(() => setError("Cannot join the game!"));
+      } else
+        setError("Please enter a game ID!");
     }
   }
 

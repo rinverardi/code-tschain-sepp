@@ -41,7 +41,9 @@ const Page = () => {
 
   function handleAbort() {
     if (wallet.connected) {
-      abortGame(program, id)
+      setError("");
+
+      callAbort(program, id)
         .then(() => router.push("../.."))
         .catch(() => setError("Cannot abort the game!"));
     }
@@ -49,7 +51,9 @@ const Page = () => {
 
   function handleStart() {
     if (wallet.connected) {
-      startGame(program, id)
+      setError("");
+
+      callStart(program, id)
         .then(() => router.push("../../in-game/" + id))
         .catch(() => setError("Cannot start the game!"));
     }
