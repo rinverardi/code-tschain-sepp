@@ -21,7 +21,7 @@
   },
   "license": "ISC",
   "scripts": {
-    "prettier:check": "prettier **/*.ts \"**/*.tsx\" -c",
-    "prettier:fix": "prettier **/*.ts \"**/*.tsx\" -w"
+    "prettier:check": "prettier \"**/*.tsx\" -c",
+    "prettier:fix": "prettier \"**/*.tsx\" -w"
   }
 }
