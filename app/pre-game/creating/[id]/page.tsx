@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  abortGame,
-  fetchGame,
-  startGame,
-} from "@components/game_instructions";
-
-import { makeProgram } from "@components/game_program";
+import { fetchGame } from "@components/game_account";
+import { callAbort, callStart, makeProgram } from "@components/game_program";
 import { inputId, outputId, outputIdOr } from "@components/id";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -1,7 +1,6 @@
 "use client";
 
-import { createGame } from "@components/game_instructions";
-import { makeProgram } from "@components/game_program";
+import { callCreate, makeProgram } from "@components/game_program";
 import { inputId, outputId } from "@components/id";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";

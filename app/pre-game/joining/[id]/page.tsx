@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchGame } from "@components/game_instructions";
+import { fetchGame } from "@components/game_account";
 import { makeProgram } from "@components/game_program";
 import { inputId, outputId, outputIdOr } from "@components/id";
 import { useConnection } from "@solana/wallet-adapter-react";
