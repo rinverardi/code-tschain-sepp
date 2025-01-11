@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Solway', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  text-align: center;
+}
+
+body {
+  background: #fff;
+}
+
+#content {
+  margin: auto;
+  max-width: 40em;
+}
+
+#content button {
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  border: 2px solid black;
+  border-radius: 4px;
+  margin: 8px 16px 8px 0;
+  padding: 10px 8px;
+  width: 240px;
+}
+
+#content button:active {
+  background: #fff;
+  color: #000;
+}
+
+#content output {
+  border: 2px solid black;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 8px 16px 8px 0;
+  padding: 8px;
+  width: 240px;
+}
+
+.error {
+  color: #f00;
+}
+
+h1 {
+  font-size: 40px;
+  margin: 32px 0;
+}
+
+input {
+  border: 2px solid black;
+  border-radius: 4px;
+  margin: 8px 16px 8px 0;
+  padding: 8px;
+  width: 240px;
+}
+
+label {
+  display: inline-block;
+  margin: 8px 16px 8px 0;
+  text-align: left;
+  width: 240px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+pre {
+  border: 2px solid black;
+  border-radius: 4px;
+  margin: 16px 0;
+  padding: 8px;
+  text-align: left;
+}
+
+#progress {
+  background: #eee;
+  display: none;
+  left: 0;
+  opacity: 0.9;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#progress div {
+  animation: spin 1s ease-in-out infinite;
+  border: 4px solid #000;
+  border-radius: 50%;
+  border-top-color: transparent;
+  height: 96px;
+  left: 50%;
+  margin: -48px;
+  position: absolute;
+  top: 50%;
+  width: 96px;
+}
+
+#wallet {
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  padding: 2px 0;
+  justify-content: space-between;
+}
+
+#wallet button {
+  background-color: #000;
+  border-radius: 0;
+  font-family: 'Solway', serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+#wallet button:active {
+  background-color: #fff;
+  color: #000;
+}
+
+#wallet output {
+  display: inline-block;
+  margin: 0 24px;
+}
+
+@font-face {
+  font-family: 'Solway';
+  src: url('/solway.woff2') format('woff2');
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
