@@ -33,7 +33,9 @@ const SolanaBalance = () => {
     }
   }, [publicKey]);
 
-  return balance < 0 ? "" : <output>{balance / LAMPORTS_PER_SOL} SOL</output>;
+  return balance < 0
+    ? <></>
+    : <output>{balance / LAMPORTS_PER_SOL} SOL</output>;
 };
 
 export default SolanaBalance;
