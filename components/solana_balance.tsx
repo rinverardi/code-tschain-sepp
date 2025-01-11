@@ -11,7 +11,7 @@ const SolanaBalance = () => {
 
   useEffect(() => {
     if (publicKey) {
-      connection.onAccountChange(
+      const subscription = connection.onAccountChange(
         publicKey,
         updatedAccountInfo => {
           setBalance(updatedAccountInfo.lamports)
@@ -24,6 +24,10 @@ const SolanaBalance = () => {
           setBalance(info.lamports);
         }
       });
+
+      return () => {
+        connection.removeAccountChangeListener(subscription);
+      }
     } else {
       setBalance(-1);
     }

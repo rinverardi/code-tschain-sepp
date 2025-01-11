@@ -1,19 +1,20 @@
 "use client";
 
-import { joinGame } from "@components/game_instructions";
-import { useProgram } from "@components/game_program";
+import { callJoin, makeProgram } from "@components/game_program";
 import { inputId, outputId } from "@components/id";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 const Page = () => {
-  const program = useProgram();
+  const { connection } = useConnection();
   const router = useRouter();
   const wallet = useWallet();
 
-  let [error, setError] = useState("");
-  let [id, setId] = useState("");
+  const [error, setError] = useState("");
+  const [id, setId] = useState("");
+
+  const program = makeProgram(connection);
 
   useEffect(
     () => setError(wallet.connected ? "" : "Please connect your wallet!"),
@@ -31,12 +32,15 @@ const Page = () => {
   }
 
   function handleJoin() {
-    if (!id.length) {
-      setError("Please enter a game ID!");
-    } else if (wallet.connected) {
-      joinGame(program, id)
-        .then(() => router.push("joining/" + id))
-        .catch(() => setError("Cannot join the game!"));
+    if (wallet.connected) {
+      if (id.length) {
+        setError("");
+
+        callJoin(program, id)
+          .then(() => router.push("joining/" + id))
+          .catch(() => setError("Cannot join the game!"));
+      } else
+        setError("Please enter a game ID!");
     }
   }
 

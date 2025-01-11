@@ -1,19 +1,20 @@
 "use client";
 
-import { createGame } from "@components/game_instructions";
-import { useProgram } from "@components/game_program";
+import { callCreate, makeProgram } from "@components/game_program";
 import { inputId, outputId } from "@components/id";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 const Page = () => {
-  const program = useProgram();
+  const { connection } = useConnection();
   const router = useRouter();
   const wallet = useWallet();
 
-  let [error, setError] = useState("");
-  let [id, setId] = useState("");
+  const [error, setError] = useState("");
+  const [id, setId] = useState("");
+
+  const program = makeProgram(connection);
 
   useEffect(
     () => setError(wallet.connected ? "" : "Please connect your wallet!"),
@@ -31,12 +32,16 @@ const Page = () => {
   }
 
   function handleCreate() {
-    if (!id.length) {
-      setError("Please enter a game ID!");
-    } else if (wallet.connected) {
-      createGame(program, id)
-        .then(() => router.push("creating/" + id))
-        .catch(() => setError("Cannot create the game!"));
+    if (wallet.connected) {
+      if (id.length) {
+        setError("");
+
+        callCreate(program, id)
+          .then(() => router.push("creating/" + id))
+          .catch(() => setError("Cannot create the game!"));
+      } else {
+        setError("Please enter a game ID!");
+      }
     }
   }
 

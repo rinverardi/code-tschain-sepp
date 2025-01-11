@@ -1,27 +1,23 @@
 "use client";
 
-import {
-  abortGame,
-  fetchGame,
-  startGame,
-} from "@components/game_instructions";
-
-import { useProgram } from "@components/game_program";
+import { fetchGame } from "@components/game_account";
+import { callAbort, callStart, makeProgram } from "@components/game_program";
 import { inputId, outputId, outputIdOr } from "@components/id";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 const Page = () => {
+  const { connection } = useConnection();
   const params = useParams<{ id: string }>();
-  const program = useProgram();
   const router = useRouter();
   const wallet = useWallet();
 
-  let [error, setError] = useState("");
-  let [players, setPlayers] = useState(["", "", "", ""]);
+  const [error, setError] = useState("");
+  const [players, setPlayers] = useState(["", "", "", ""]);
 
   const id = inputId(params.id);
+  const program = makeProgram(connection);
 
   useEffect(() => {
     fetchGame(program, id)
@@ -40,7 +36,9 @@ const Page = () => {
 
   function handleAbort() {
     if (wallet.connected) {
-      abortGame(program, id)
+      setError("");
+
+      callAbort(program, id)
         .then(() => router.push("../.."))
         .catch(() => setError("Cannot abort the game!"));
     }
@@ -48,7 +46,9 @@ const Page = () => {
 
   function handleStart() {
     if (wallet.connected) {
-      startGame(program, id)
+      setError("");
+
+      callStart(program, id)
         .then(() => router.push("../../in-game/" + id))
         .catch(() => setError("Cannot start the game!"));
     }
