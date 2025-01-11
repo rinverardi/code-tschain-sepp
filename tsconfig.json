@@ -12,7 +12,9 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "@components/*": ["components/*"],
+      "@tschain-sepp/components/*": ["components/*"],
+      "@tschain-sepp/idl/*": ["target/idl/*"],
+      "@tschain-sepp/types/*": ["target/types/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

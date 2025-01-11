@@ -1,14 +1,24 @@
 "use client";
 
-import { deriveAddress, fetchGame, watchGame } from "@components/game_account";
-import { callAbort, callStart, makeProgram } from "@components/game_program";
-import { inputId, outputId, outputIdOr } from "@components/id";
+import {
+  deriveAddress,
+  fetchGame,
+  watchGame
+} from "@tschain-sepp/components/game_account";
+
+import {
+  callAbort,
+  callStart,
+  makeProgram
+} from "@tschain-sepp/components/game_program";
+
+import { inputId, outputId, outputIdOr } from "@tschain-sepp/components/id";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
-import { TschainSepp } from "../../../../target/types/tschain_sepp";
+import { TschainSepp } from "@types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
 

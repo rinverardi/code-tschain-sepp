@@ -1,7 +1,7 @@
 "use client";
 
-import { callJoin, makeProgram } from "@components/game_program";
-import { inputId, outputId } from "@components/id";
+import { callJoin, makeProgram } from "@tschain-sepp/components/game_program";
+import { inputId, outputId } from "@tschain-sepp/components/id";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
