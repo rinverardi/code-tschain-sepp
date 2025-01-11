@@ -1,19 +1,21 @@
 "use client";
 
 import { fetchGame } from "@components/game_instructions";
-import { useProgram } from "@components/game_program";
+import { makeProgram } from "@components/game_program";
 import { inputId, outputId, outputIdOr } from "@components/id";
+import { useConnection } from "@solana/wallet-adapter-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
+  const { connection } = useConnection();
   const params = useParams<{ id: string }>();
-  const program = useProgram();
 
-  let [error, setError] = useState("");
-  let [players, setPlayers] = useState(["", "", "", ""]);
+  const [error, setError] = useState("");
+  const [players, setPlayers] = useState(["", "", "", ""]);
 
   const id = inputId(params.id);
+  const program = makeProgram(connection);
 
   useEffect(() => {
     fetchGame(program, id)

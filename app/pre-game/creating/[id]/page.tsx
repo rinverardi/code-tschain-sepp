@@ -6,22 +6,23 @@ import {
   startGame,
 } from "@components/game_instructions";
 
-import { useProgram } from "@components/game_program";
+import { makeProgram } from "@components/game_program";
 import { inputId, outputId, outputIdOr } from "@components/id";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 const Page = () => {
+  const { connection } = useConnection();
   const params = useParams<{ id: string }>();
-  const program = useProgram();
   const router = useRouter();
   const wallet = useWallet();
 
-  let [error, setError] = useState("");
-  let [players, setPlayers] = useState(["", "", "", ""]);
+  const [error, setError] = useState("");
+  const [players, setPlayers] = useState(["", "", "", ""]);
 
   const id = inputId(params.id);
+  const program = makeProgram(connection);
 
   useEffect(() => {
     fetchGame(program, id)
