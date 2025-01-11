@@ -1,12 +1,12 @@
-import SolanaButton from "@components/solana_button";
-import SolanaProvider from "@components/solana_provider";
+import SolanaBalance from "@tschain-sepp/components/solana_balance";
+import SolanaButton from "@tschain-sepp/components/solana_button";
+import SolanaProvider from "@tschain-sepp/components/solana_provider";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 import "./layout.css";
-import SolanaBalance from "@components/solana_balance";
 
 const Layout = ({ children }: LayoutProps) => <>
   <html lang="en">

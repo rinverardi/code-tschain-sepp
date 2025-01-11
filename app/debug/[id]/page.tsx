@@ -1,8 +1,12 @@
 "use client";
 
-import { deriveAddress, fetchGame } from "@components/game_account";
-import { makeProgram } from "@components/game_program";
-import { inputId } from "@components/id";
+import {
+  deriveAddress,
+  fetchGame
+} from "@tschain-sepp/components/game_account";
+
+import { makeProgram } from "@tschain-sepp/components/game_program";
+import { inputId } from "@tschain-sepp/components/id";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";

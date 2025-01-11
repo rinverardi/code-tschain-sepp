@@ -2,7 +2,7 @@ import { IdlAccounts, Program } from "@coral-xyz/anchor";
 import { useEffect } from "react";
 import { Connection, PublicKey } from "@solana/web3.js";
 
-import { TschainSepp } from "../target/types/tschain_sepp";
+import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
 

@@ -30,9 +30,9 @@ const Page = () => {
     <p>
       The player who has discarded all their cards wins the game.
     </p>
-    <p>
+    <div>
       <button onClick={handleReturn}>Go Back</button>
-    </p>
+    </div>
   </>;
 };
 
