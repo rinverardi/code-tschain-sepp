@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: 'Solway', serif;
+  font-family: 'Oxanium', serif;
   font-size: 20px;
   font-weight: 400;
   margin: 0;
@@ -20,10 +20,10 @@ body {
 
 #content button {
   background: #000;
-  color: #fff;
-  cursor: pointer;
   border: 2px solid black;
   border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
   margin: 8px 16px 8px 0;
   padding: 10px 8px;
   width: 240px;
@@ -68,6 +68,7 @@ label {
 }
 
 p {
+  line-height: 150%;
   margin: 16px 0;
 }
 
@@ -108,6 +109,7 @@ pre {
   background-color: #000;
   color: #fff;
   display: flex;
+  margin-bottom: 40px;
   padding: 2px 0;
   justify-content: space-between;
 }
@@ -115,7 +117,7 @@ pre {
 #wallet button {
   background-color: #000;
   border-radius: 0;
-  font-family: 'Solway', serif;
+  font-family: 'Oxanium', serif;
   font-size: 20px;
   font-weight: 400;
 }
@@ -131,8 +133,8 @@ pre {
 }
 
 @font-face {
-  font-family: 'Solway';
-  src: url('/solway.woff2') format('woff2');
+  font-family: 'Oxanium';
+  src: url('/fonts/oxanium.woff2') format('woff2');
 }
 
 @keyframes spin {
