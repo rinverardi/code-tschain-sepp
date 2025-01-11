@@ -19,7 +19,6 @@ import {
 } from "@solana/web3.js";
 
 import IDL from "@tschain-sepp/idl/tschain_sepp.json";
-
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];

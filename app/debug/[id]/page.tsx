@@ -1,5 +1,9 @@
 "use client";
 
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useConnection } from "@solana/wallet-adapter-react";
+
 import {
   deriveAddress,
   fetchGame
@@ -7,9 +11,6 @@ import {
 
 import { makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId } from "@tschain-sepp/components/id";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useConnection } from "@solana/wallet-adapter-react";
 
 const Page = () => {
   const { connection } = useConnection();

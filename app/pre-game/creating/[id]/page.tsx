@@ -1,5 +1,10 @@
 "use client";
 
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+
 import {
   deriveAddress,
   fetchGame,
@@ -13,12 +18,7 @@ import {
 } from "@tschain-sepp/components/game_program";
 
 import { inputId, outputId, outputIdOr } from "@tschain-sepp/components/id";
-import { IdlAccounts } from "@coral-xyz/anchor";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-
-import { TschainSepp } from "@types/tschain_sepp";
+import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
 

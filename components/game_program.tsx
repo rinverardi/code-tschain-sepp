@@ -1,3 +1,5 @@
+import { BN, Program } from "@coral-xyz/anchor";
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { makeAnchorProvider } from "@tschain-sepp/components/anchor";
 
 import {
@@ -6,11 +8,7 @@ import {
 } from "@tschain-sepp/components/game_account";
 
 import { toggleProgress } from "@tschain-sepp/components/progress";
-import { BN, Program } from "@coral-xyz/anchor";
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-
 import IDL from "@tschain-sepp/idl/tschain_sepp.json";
-
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 const STAKE = new BN(LAMPORTS_PER_SOL / 1000);
