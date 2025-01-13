@@ -3,23 +3,105 @@
   font-family: 'Oxanium', serif;
   font-size: 20px;
   font-weight: 400;
+  line-height: 1.0;
   margin: 0;
   outline: none;
   padding: 0;
-  text-align: center;
 }
 
 body {
   background: #fff;
 }
 
+.card {
+  background: #fff;
+  border: 1px solid #888;
+  border-radius: 8px;
+  height: 160px;
+  position: relative;
+  text-align: center;
+  transition: border 0.3s ease-in-out, transform 0.3s ease-in-out;
+  user-select: none;
+  width: 112px;
+}
+
+.card--available:hover {
+  cursor: pointer;
+  transform: translateY(-8px) rotateZ(-2deg);
+}
+
+.card--facedown::after {
+  background: #abc;
+  border-radius: 6px;
+  bottom: 6px;
+  content: '';
+  left: 6px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+}
+
+.card__figure--1 {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.card__figure--1 span {
+  font-size: 40px;
+}
+
+.card__figure--n {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: space-evenly;
+  padding: 24px;
+}
+
+.card__figure--n span {
+  font-size: 24px;
+  width: 33%;
+}
+
+.card__index {
+  left: 4px;
+  position: absolute;
+  top: 4px;
+  width: 20px;
+}
+
+.card__index span {
+  font-size: 16px;
+}
+
+.card__index--bottom {
+  bottom: 4px;
+  left: auto;
+  right: 4px;
+  top: auto;
+  transform: rotate(180deg);
+}
+
 #content {
-  margin: auto;
-  max-width: 40em;
   padding: 0 24px 24px 24px;
 }
 
-#content button {
+.content--post-game {
+  margin: 24px auto;
+  max-width: 40em;
+  text-align: center;
+}
+
+.content--pre-game {
+  margin: 24px auto;
+  max-width: 40em;
+  text-align: center;
+}
+
+.content--pre-game button {
   background: #000;
   border: 2px solid black;
   border-radius: 4px;
@@ -30,12 +112,19 @@ body {
   width: 240px;
 }
 
-#content button:active {
+.content--pre-game button:active {
   background: #fff;
   color: #000;
 }
 
-#content output {
+.content--pre-game label {
+  display: inline-block;
+  margin: 8px 16px 8px 0;
+  text-align: left;
+  width: 240px;
+}
+
+.content--pre-game output {
   border: 2px solid black;
   border-radius: 4px;
   display: inline-block;
@@ -44,13 +133,21 @@ body {
   width: 240px;
 }
 
-.error {
-  color: #f00;
-}
-
 h1 {
   font-size: 40px;
-  margin: 32px 0;
+  margin: 32px 0 24px 0;
+}
+
+.hand {
+  display: flex;
+}
+
+.hand .card~.card {
+  margin-left: -84px;
+}
+
+.hand .card--available:hover~.card {
+  transform: rotateZ(12deg) translateX(36px);
 }
 
 input {
@@ -61,24 +158,18 @@ input {
   width: 240px;
 }
 
-label {
-  display: inline-block;
-  margin: 8px 16px 8px 0;
-  text-align: left;
-  width: 240px;
-}
-
 p {
-  line-height: 28px;
+  line-height: 1.4;
   margin: 16px 0;
 }
 
-pre {
-  border: 2px solid black;
-  border-radius: 4px;
-  margin: 16px 0;
-  padding: 8px;
-  text-align: left;
+.player-indicator {
+  animation: bounce 0.3s alternate infinite;
+}
+
+.player-indicator::after {
+  color: #f00;
+  content: '◀';
 }
 
 #progress {
@@ -92,7 +183,7 @@ pre {
   right: 0;
 }
 
-#progress div {
+#progress__indicator {
   animation: spin 1s ease-in-out infinite;
   border: 4px solid #000;
   border-radius: 50%;
@@ -105,12 +196,23 @@ pre {
   width: 96px;
 }
 
+.suit--blue {
+  color: #44b;
+}
+
+.suit--green {
+  color: #282;
+}
+
+.suit--red {
+  color: #c44;
+}
+
 #wallet {
   align-items: center;
   background-color: #000;
   color: #fff;
   display: flex;
-  margin-bottom: 40px;
   padding: 2px 0;
   justify-content: space-between;
 }
@@ -138,8 +240,98 @@ pre {
   src: url('/fonts/oxanium.woff2') format('woff2');
 }
 
+@keyframes bounce {
+  from {
+    margin-left: 4px;
+  }
+
+  to {
+    margin-left: 16px;
+  }
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (width < 800px) {
+  .card {
+    margin: 16px 0;
+  }
+
+  .content--in-game {
+    margin: 24px;
+  }
+
+  .pile {
+    display: inline-block;
+    margin-right: 16px;
+    vertical-align: top;
+  }
+
+  .player {
+    margin: 16px 0;
+  }
+}
+
+@media (800px <= width) {
+  .card {
+    margin: 16px 0;
+  }
+
+  #discard-pile {
+    left: 50%;
+    margin-left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #draw-pile {
+    margin-right: 10px;
+    right: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .pile {
+    position: absolute;
+    text-align: center;
+  }
+
+  .player {
+    position: absolute;
+  }
+
+  #player0 {
+    left: 24px;
+    top: 80px;
+  }
+
+  #player1 {
+    bottom: 50%;
+    right: 24px;
+    text-align: right;
+    top: 80px;
+  }
+
+  #player1 .hand {
+    justify-content: right;
+  }
+
+  #player2 {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  #player3 {
+    bottom: 24px;
+    right: 24px;
+    text-align: right;
+  }
+
+  #player3 .hand {
+    justify-content: right;
   }
 }

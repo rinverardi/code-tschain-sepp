@@ -1,7 +1,9 @@
 "use client";
 
 const Page = () => <>
-  <h1>Tschain Sepp</h1>
+  <div className="content--post-game" id="content">
+    <h1>Game Over</h1>
+  </div>
 </>;
 
 export default Page;
