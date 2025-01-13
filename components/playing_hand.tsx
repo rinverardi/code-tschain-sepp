@@ -17,12 +17,13 @@ function derivePlayer(card: number): number {
 const PlayingHand = ({ available, deck, mine, onDiscard, player }: PlayingHandProps) => {
   return <>
     <div className="hand">
-      {deck.map((card, index) => derivePlayer(card) == player &&
+      {deck.map((card, index) => derivePlayer(card) == player && <>
         <PlayingCard
           available={available}
           card={mine ? card : NaN}
           onDiscard={onDiscard}
-          key={index} />)}
+          key={index} />
+      </>)}
     </div>
   </>;
 };

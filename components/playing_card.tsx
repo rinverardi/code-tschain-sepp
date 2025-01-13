@@ -63,10 +63,7 @@ const PlayingCard = ({ available, card, onDiscard }: PlayingCardProps) => {
   }
 
   if (isNaN(card)) {
-    return <>
-      <div className={`card ${availability} card--facedown`}>
-      </div >
-    </>
+    return <div className={`card ${availability} card--facedown`}/>;
   } else {
     const rank = deriveRank(card);
     const [suit, suitColor] = deriveSuit(card);

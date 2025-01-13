@@ -9,6 +9,21 @@
   padding: 0;
 }
 
+a,
+a:active,
+a:visited {
+  color: #678;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a+a {
+  margin-left: 16px;
+}
+
 body {
   background: #fff;
 }
@@ -103,7 +118,7 @@ body {
 
 .content--pre-game button {
   background: #000;
-  border: 2px solid black;
+  border: 2px solid #000;
   border-radius: 4px;
   color: #fff;
   cursor: pointer;
@@ -125,7 +140,7 @@ body {
 }
 
 .content--pre-game output {
-  border: 2px solid black;
+  border: 2px solid #000;
   border-radius: 4px;
   display: inline-block;
   margin: 8px 16px 8px 0;
@@ -151,7 +166,7 @@ h1 {
 }
 
 input {
-  border: 2px solid black;
+  border: 2px solid #000;
   border-radius: 4px;
   margin: 8px 16px 8px 0;
   padding: 8px;
@@ -304,13 +319,13 @@ p {
 
   #discard-pile {
     left: 50%;
-    margin-left: 10px;
+    margin-left: 8px;
     top: 50%;
     transform: translateY(-50%);
   }
 
   #draw-pile {
-    margin-right: 10px;
+    margin-right: 8px;
     right: 50%;
     top: 50%;
     transform: translateY(-50%);
