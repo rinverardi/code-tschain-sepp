@@ -51,7 +51,7 @@ const Player = ({ game, publicKey, slot }: PlayerProps) => {
     {game.players[slot] &&
       <PlayingHand
         available={game.currentPlayer == me && game.currentPlayer == slot}
-        cards={game.cards}
+        deck={game.deck}
         mine={slot == me}
         player={slot} />
     }

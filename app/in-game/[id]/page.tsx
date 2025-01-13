@@ -44,7 +44,7 @@ const Page = () => {
     <div className="content--in-game" id="in-game">
       {game && <>
         <DrawPile available={game.currentPlayer == me} />
-        <DiscardPile card={game.cards[game.currentCard]} />
+        <DiscardPile card={game.deck[game.currentCard]} />
 
         <Player
           game={game}

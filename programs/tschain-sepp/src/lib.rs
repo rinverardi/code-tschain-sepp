@@ -3,6 +3,8 @@ use anchor_lang::prelude::*;
 declare_id!("vKPUHaPCrDoYLdHiiGGstckp4bfyi2Nny8nSf5uGhWU");
 
 pub mod config {
+    pub const CARDS_PER_DECK: usize = 36;
+
     pub const PLAYER_LIMIT: usize = 4;
 }
 
@@ -98,7 +100,7 @@ pub mod tschain_sepp {
 
     const DISCRIMINATOR: usize = 8;
 
-    pub fn abort(context: Context<Abort>, id: String) -> Result<()> {
+    pub fn abort_game(context: Context<AbortGame>, id: String) -> Result<()> {
         msg!("Aborting game {}.", id);
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
@@ -148,7 +150,7 @@ pub mod tschain_sepp {
         Ok(())
     }
 
-    pub fn create(context: Context<Create>, id: String, stake: u64) -> Result<()> {
+    pub fn create_game(context: Context<CreateGame>, id: String, stake: u64) -> Result<()> {
         msg!("Creating game {}.", id);
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
@@ -172,7 +174,7 @@ pub mod tschain_sepp {
         Ok(())
     }
 
-    pub fn join(context: Context<Join>, id: String) -> Result<()> {
+    pub fn join_game(context: Context<JoinGame>, id: String) -> Result<()> {
         msg!("Joining game {}.", id);
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
@@ -211,7 +213,7 @@ pub mod tschain_sepp {
         Ok(())
     }
 
-    pub fn start(context: Context<Start>, id: String) -> Result<()> {
+    pub fn start_game(context: Context<StartGame>, id: String) -> Result<()> {
         msg!("Starting game {}.", id);
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
@@ -245,7 +247,7 @@ pub mod tschain_sepp {
 
     #[derive(Accounts)]
     #[instruction(id: String)]
-    pub struct Abort<'info> {
+    pub struct AbortGame<'info> {
         #[account(
             mut,
             seeds = ["game".as_ref(), id.as_ref()],
@@ -259,7 +261,7 @@ pub mod tschain_sepp {
 
     #[derive(Accounts)]
     #[instruction(id: String)]
-    pub struct Create<'info> {
+    pub struct CreateGame<'info> {
         #[account(
             init,
             payer = signer,
@@ -278,9 +280,9 @@ pub mod tschain_sepp {
     #[account]
     #[derive(InitSpace)]
     pub struct Game {
-        pub cards: [u8; 36],
         pub current_card: u8,
         pub current_player: u8,
+        pub deck: [u16; config::CARDS_PER_DECK],
 
         #[max_len(8)]
         pub id: String,
@@ -293,7 +295,7 @@ pub mod tschain_sepp {
 
     #[derive(Accounts)]
     #[instruction(id: String)]
-    pub struct Join<'info> {
+    pub struct JoinGame<'info> {
         #[account(
             mut,
             seeds = ["game".as_ref(), id.as_ref()],
@@ -309,7 +311,7 @@ pub mod tschain_sepp {
 
     #[derive(Accounts)]
     #[instruction(id: String)]
-    pub struct Start<'info> {
+    pub struct StartGame<'info> {
         #[account(
             mut,
             seeds = ["game".as_ref(), id.as_ref()],

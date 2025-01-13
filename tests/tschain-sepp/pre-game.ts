@@ -84,7 +84,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
@@ -92,7 +92,7 @@ describe("pre-game scenarios", () => {
     // The game master aborts the game.
 
     await program.methods
-      .abort(gameId)
+      .abortGame(gameId)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
@@ -129,7 +129,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: players[0].publicKey })
       .signers([players[0]])
       .rpc();
@@ -137,7 +137,7 @@ describe("pre-game scenarios", () => {
     // The game participant joins the game.
 
     await program.methods
-      .join(gameId)
+      .joinGame(gameId)
       .accounts({ signer: players[1].publicKey })
       .signers([players[1]])
       .rpc();
@@ -145,7 +145,7 @@ describe("pre-game scenarios", () => {
     // The game master aborts the game.
 
     await program.methods
-      .abort(gameId)
+      .abortGame(gameId)
       .accounts({ signer: players[0].publicKey })
       .remainingAccounts([
         {
@@ -193,7 +193,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
@@ -227,7 +227,7 @@ describe("pre-game scenarios", () => {
 
     try {
       await program.methods
-        .create(gameId, STAKE_LARGE)
+        .createGame(gameId, STAKE_LARGE)
         .accounts({ signer: player.publicKey })
         .signers([player])
         .rpc();
@@ -255,7 +255,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: players[0].publicKey })
       .signers([players[0]])
       .rpc();
@@ -263,7 +263,7 @@ describe("pre-game scenarios", () => {
     // The game participant joins the game.
 
     await program.methods
-      .join(gameId)
+      .joinGame(gameId)
       .accounts({ signer: players[1].publicKey })
       .signers([players[1]])
       .rpc();
@@ -289,7 +289,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game for the first time.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
@@ -300,7 +300,7 @@ describe("pre-game scenarios", () => {
 
     try {
       await program.methods
-        .create(gameId, STAKE_SMALL)
+        .createGame(gameId, STAKE_SMALL)
         .accounts({ signer: player.publicKey })
         .signers([player])
         .rpc();
@@ -321,7 +321,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
@@ -332,7 +332,7 @@ describe("pre-game scenarios", () => {
 
     try {
       await program.methods
-        .join(gameId)
+        .joinGame(gameId)
         .accounts({ signer: player.publicKey })
         .signers([player])
         .rpc();
@@ -360,7 +360,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: players[0].publicKey })
       .signers([players[0]])
       .rpc();
@@ -368,7 +368,7 @@ describe("pre-game scenarios", () => {
     // The game participant joins the game for the first time.
 
     await program.methods
-      .join(gameId)
+      .joinGame(gameId)
       .accounts({ signer: players[1].publicKey })
       .signers([players[1]])
       .rpc();
@@ -379,7 +379,7 @@ describe("pre-game scenarios", () => {
 
     try {
       await program.methods
-        .join(gameId)
+        .joinGame(gameId)
         .accounts({ signer: players[1].publicKey })
         .signers([players[1]])
         .rpc();
@@ -402,7 +402,7 @@ describe("pre-game scenarios", () => {
     // The game master creates the game.
 
     await program.methods
-      .create(gameId, STAKE_SMALL)
+      .createGame(gameId, STAKE_SMALL)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
@@ -410,7 +410,7 @@ describe("pre-game scenarios", () => {
     // The game master starts the game.
 
     await program.methods
-      .start(gameId)
+      .startGame(gameId)
       .accounts({ signer: player.publicKey })
       .signers([player])
       .rpc();
