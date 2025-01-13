@@ -276,6 +276,7 @@ pub mod tschain_sepp {
     pub struct Game {
         pub cards: [u8; 36],
         pub current_card: u8,
+        pub current_player: u8,
 
         #[max_len(8)]
         pub id: String,
