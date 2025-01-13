@@ -6,7 +6,7 @@ const DiscardPile = ({ card }: DiscardPileProps) =>
   <>
     <div className="pile" id="discard-pile">
       <label>Discard</label>
-      <PlayingCard available={false} card={card} />
+      <PlayingCard available={false} card={card} onDiscard={null} />
     </div>
   </>;
 
