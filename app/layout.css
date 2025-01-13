@@ -9,6 +9,21 @@
   padding: 0;
 }
 
+a,
+a:active,
+a:visited {
+  color: #678;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a+a {
+  margin-left: 16px;
+}
+
 body {
   background: #fff;
 }

@@ -1,4 +1,5 @@
 import { IdlAccounts } from "@coral-xyz/anchor";
+import { MouseEvent } from "react";
 import { PublicKey } from "@solana/web3.js";
 import PlayingHand from "@tschain-sepp/components/playing_hand";
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
@@ -39,8 +40,16 @@ export function getMe(game: GameAccount, publicKey: PublicKey): number {
   throw new Error("Unknown player");
 }
 
-const Player = ({ game, onDiscard, publicKey, slot }: PlayerProps) => {
+const Player = ({
+  game,
+  onAbort,
+  onDiscard,
+  publicKey,
+  slot
+}: PlayerProps) => {
   const me = getMe(game, publicKey);
+
+  const available = game.currentPlayer == me && game.currentPlayer == slot;
 
   return <div className="player" id={"player" + slot}>
     {game.currentPlayer == slot &&
@@ -51,19 +60,24 @@ const Player = ({ game, onDiscard, publicKey, slot }: PlayerProps) => {
     {game.currentPlayer == slot &&
       <span className="player__indicator player__indicator--right" />}
 
-    {game.players[slot] &&
+    {game.players[slot] && <>
       <PlayingHand
-        available={game.currentPlayer == me && game.currentPlayer == slot}
+        available={available}
         deck={game.deck}
         mine={slot == me}
-        onDiscard={onDiscard}
+        onDiscard={available ? onDiscard : null}
         player={slot} />
-    }
+
+      {slot == 0 && slot == me && <>
+        <a href="" onClick={onAbort}>Abort</a>
+      </>}
+    </>}
   </div>
 };
 
 type PlayerProps = {
   game: GameAccount;
+  onAbort: (event: MouseEvent<HTMLAnchorElement>) => void;
   onDiscard: (card: number) => void;
   publicKey: PublicKey;
   slot: number;
