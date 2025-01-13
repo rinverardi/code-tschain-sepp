@@ -2,6 +2,10 @@ use anchor_lang::prelude::*;
 
 declare_id!("vKPUHaPCrDoYLdHiiGGstckp4bfyi2Nny8nSf5uGhWU");
 
+pub mod config {
+    pub const PLAYER_LIMIT: usize = 4;
+}
+
 pub mod error {
     use super::*;
 
@@ -152,7 +156,7 @@ pub mod tschain_sepp {
         // Create the game.
 
         game.id = id;
-        game.players = [Some(*context.accounts.signer.key), None, None, None];
+        game.players[0] = Some(*context.accounts.signer.key);
         game.stake = stake;
         game.status = Status::Created;
 
@@ -281,7 +285,7 @@ pub mod tschain_sepp {
         #[max_len(8)]
         pub id: String,
 
-        pub players: [Option<Pubkey>; 4],
+        pub players: [Option<Pubkey>; config::PLAYER_LIMIT],
         pub stake: u64,
         pub status: Status,
         pub winner: Option<Pubkey>,
