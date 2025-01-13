@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import {
@@ -11,20 +11,17 @@ import {
 
 import { inputId, outputId } from "@tschain-sepp/components/id";
 
+import Notifications, {
+  showError
+} from "@tschain-sepp/components/notification";
+
 const Page = () => {
   const { connection } = useConnection();
   const router = useRouter();
+  const [id, setId] = useState("");
   const wallet = useWallet();
 
-  const [error, setError] = useState("");
-  const [id, setId] = useState("");
-
   const program = makeProgram(connection);
-
-  useEffect(
-    () => setError(wallet.connected ? "" : "Please connect your wallet!"),
-    [wallet]
-  );
 
   function handleCancel() {
     router.push("..");
@@ -37,20 +34,24 @@ const Page = () => {
   }
 
   function handleCreate() {
-    if (wallet.connected) {
-      if (id.length) {
-        setError("");
-
-        callCreate(program, id)
-          .then(() => router.push("creating/" + id))
-          .catch(() => setError("Cannot create the game!"));
-      } else {
-        setError("Please enter a game ID!");
-      }
+    if (!id.length) {
+      showError("Please enter a game ID!");
+      return;
     }
+
+    if (!wallet.connected) {
+      showError("Please connect your wallet!");
+      return;
+    }
+
+    callCreate(program, id)
+      .then(() => router.push("creating/" + id))
+      .catch(() => showError("Cannot create the game!"));
   }
 
   return <>
+    <Notifications position="top-right" />
+
     <div className="content--pre-game" id="content">
       <h1>Create a Game</h1>
       <p>
@@ -69,9 +70,6 @@ const Page = () => {
         <button onClick={handleCreate}>Create</button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-      <p className="error">
-        {error}
-      </p>
     </div>
   </>;
 };

@@ -1,25 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { callJoin, makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId, outputId } from "@tschain-sepp/components/id";
 
+import Notifications, {
+  showError
+} from "@tschain-sepp/components/notification";
+
 const Page = () => {
   const { connection } = useConnection();
   const router = useRouter();
+  const [id, setId] = useState("");
   const wallet = useWallet();
 
-  const [error, setError] = useState("");
-  const [id, setId] = useState("");
-
   const program = makeProgram(connection);
-
-  useEffect(
-    () => setError(wallet.connected ? "" : "Please connect your wallet!"),
-    [wallet]
-  );
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const id = inputId(event.target.value);
@@ -32,19 +29,24 @@ const Page = () => {
   }
 
   function handleJoin() {
-    if (wallet.connected) {
-      if (id.length) {
-        setError("");
-
-        callJoin(program, id)
-          .then(() => router.push("joining/" + id))
-          .catch(() => setError("Cannot join the game!"));
-      } else
-        setError("Please enter a game ID!");
+    if (!id.length) {
+      showError("Please enter a game ID!");
+      return;
     }
+
+    if (!wallet.connected) {
+      showError("Please connect your wallet!");
+      return;
+    }
+
+    callJoin(program, id)
+      .then(() => router.push("joining/" + id))
+      .catch(() => showError("Cannot join the game!"));
   }
 
   return <>
+    <Notifications position="top-right" />
+
     <div className="content--pre-game" id="content">
       <h1>Join a Game</h1>
       <p>
@@ -63,9 +65,6 @@ const Page = () => {
         <button onClick={handleJoin}>Join</button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-      <p className="error">
-        {error}
-      </p>
     </div>
   </>;
 };

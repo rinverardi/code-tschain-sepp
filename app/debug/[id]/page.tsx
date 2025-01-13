@@ -12,12 +12,14 @@ import {
 import { makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId } from "@tschain-sepp/components/id";
 
+import Notifications, {
+  showError
+} from "@tschain-sepp/components/notification";
+
 const Page = () => {
   const { connection } = useConnection();
   const params = useParams<{ id: string }>();
-
   const [dump, setDump] = useState("");
-  const [error, setError] = useState("");
 
   const id = inputId(params.id);
   const program = makeProgram(connection);
@@ -27,18 +29,17 @@ const Page = () => {
 
     fetchGame(address, program)
       .then((game) => setDump(JSON.stringify(game, null, 2)))
-      .catch(() => setError("Cannot fetch the game!"));
+      .catch(() => showError("Cannot fetch the game!"));
   }, []);
 
   return <>
+    <Notifications position="top-right"/>
+
     <div className="content--debug" id="content">
       <h1>Debug a Game</h1>
       <pre>
         {dump}
       </pre>
-      <p className="error">
-        {error}
-      </p>
     </div>
   </>;
 };

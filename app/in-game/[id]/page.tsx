@@ -9,6 +9,11 @@ import DrawPile from "@tschain-sepp/components/draw_pile";
 import { deriveAddress, fetchGame, watchGame } from "@tschain-sepp/components/game_account";
 import { makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId } from "@tschain-sepp/components/id";
+
+import Notifications, {
+  showError
+} from "@tschain-sepp/components/notification";
+
 import Player, { getMe } from "@tschain-sepp/components/player";
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
@@ -17,10 +22,8 @@ type GameAccount = IdlAccounts<TschainSepp>["game"];
 const Page = () => {
   const { connection } = useConnection();
   const params = useParams<{ id: string }>();
-  const wallet = useWallet();
-
-  const [error, setError] = useState("");
   const [game, setGame] = useState<GameAccount>(null);
+  const wallet = useWallet();
 
   const id = inputId(params.id);
   const me = game && wallet.publicKey ? getMe(game, wallet.publicKey) : NaN;
@@ -32,15 +35,12 @@ const Page = () => {
   useEffect(() => {
     fetchGame(address, program)
       .then(setGame)
-      .catch(() => setError("Cannot fetch the game!"));
+      .catch(() => showError("Cannot fetch the game!"));
   }, []);
 
-  useEffect(
-    () => setError(wallet.connected ? "" : "Please connect your wallet!"),
-    [wallet]
-  );
-
   return <>
+    <Notifications position="top-center" />
+
     <div className="content--in-game" id="in-game">
       {game && <>
         <DrawPile available={game.currentPlayer == me} />

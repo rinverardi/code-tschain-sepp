@@ -13,6 +13,11 @@ import {
 
 import { makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId, outputId, outputIdOr } from "@tschain-sepp/components/id";
+
+import Notifications, {
+  showError
+} from "@tschain-sepp/components/notification";
+
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
@@ -21,8 +26,6 @@ const Page = () => {
   const { connection } = useConnection();
   const params = useParams<{ id: string }>();
   const router = useRouter();
-
-  const [error, setError] = useState("");
   const [players, setPlayers] = useState(["", "", "", ""]);
 
   const id = inputId(params.id);
@@ -34,7 +37,7 @@ const Page = () => {
   useEffect(() => {
     fetchGame(address, program)
       .then(update)
-      .catch(() => setError("Cannot fetch the game!"));
+      .catch(() => showError("Cannot fetch the game!"));
   }, []);
 
   function update(game: GameAccount): void {
@@ -52,6 +55,8 @@ const Page = () => {
   }
 
   return <>
+    <Notifications position="top-right" />
+
     <div className="content--pre-game" id="content">
       <h1>Waiting for Oponnents</h1>
       <div>
@@ -74,9 +79,6 @@ const Page = () => {
         <label>Player Four:</label>
         <output>{outputIdOr(players[3], "Empty Slot")}</output>
       </div>
-      <p className="error">
-        {error}
-      </p>
     </div>
   </>
 };
