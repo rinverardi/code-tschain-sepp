@@ -83,34 +83,36 @@ const Page = () => {
   }
 
   return <>
-    <h1>Waiting for Oponnents</h1>
-    <div>
-      <label>Game Identifier:</label>
-      <output>{outputId(id)}</output>
+    <div className="content--pre-game" id="content">
+      <h1>Waiting for Oponnents</h1>
+      <div>
+        <label>Game Identifier:</label>
+        <output>{outputId(id)}</output>
+      </div>
+      <div>
+        <label>Player One:</label>
+        <output>{outputIdOr(players[0], "Empty Slot")}</output>
+      </div>
+      <div>
+        <label>Player Two:</label>
+        <output>{outputIdOr(players[1], "Empty Slot")}</output>
+      </div>
+      <div>
+        <label>Player Three:</label>
+        <output>{outputIdOr(players[2], "Empty Slot")}</output>
+      </div>
+      <div>
+        <label>Player Four:</label>
+        <output>{outputIdOr(players[3], "Empty Slot")}</output>
+      </div>
+      <div>
+        <button onClick={handleStart}>Start</button>
+        <button onClick={handleAbort}>Abort</button>
+      </div>
+      <p className="error">
+        {error}
+      </p>
     </div>
-    <div>
-      <label>Player One:</label>
-      <output>{outputIdOr(players[0], "Empty Slot")}</output>
-    </div>
-    <div>
-      <label>Player Two:</label>
-      <output>{outputIdOr(players[1], "Empty Slot")}</output>
-    </div>
-    <div>
-      <label>Player Three:</label>
-      <output>{outputIdOr(players[2], "Empty Slot")}</output>
-    </div>
-    <div>
-      <label>Player Four:</label>
-      <output>{outputIdOr(players[3], "Empty Slot")}</output>
-    </div>
-    <div>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handleAbort}>Abort</button>
-    </div>
-    <p className="error">
-      {error}
-    </p>
   </>
 };
 

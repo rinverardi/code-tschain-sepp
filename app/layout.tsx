@@ -16,9 +16,7 @@ const Layout = ({ children }: LayoutProps) => <>
           <SolanaButton />
           <SolanaBalance />
         </div>
-        <div id="content">
-          {children}
-        </div>
+        {children}
       </SolanaProvider>
       <div id="progress">
         <div />

@@ -45,21 +45,28 @@ const Page = () => {
   }
 
   return <>
-    <h1>Join a Game</h1>
-    <p>
-      Enter a valid game identifier and join the game.
-    </p>
-    <div>
-      <label>Game ID:</label>
-      <input autoFocus maxLength={8} onChange={handleChange} value={outputId(id)} />
+    <div className="content--pre-game" id="content">
+      <h1>Join a Game</h1>
+      <p>
+        Enter a valid game identifier and join the game.
+      </p>
+      <div>
+        <label>Game ID:</label>
+
+        <input
+          autoFocus
+          maxLength={8}
+          onChange={handleChange}
+          value={outputId(id)} />
+      </div>
+      <div>
+        <button onClick={handleJoin}>Join</button>
+        <button onClick={handleCancel}>Cancel</button>
+      </div>
+      <p className="error">
+        {error}
+      </p>
     </div>
-    <div>
-      <button onClick={handleJoin}>Join</button>
-      <button onClick={handleCancel}>Cancel</button>
-    </div>
-    <p className="error">
-      {error}
-    </p>
   </>;
 };
 

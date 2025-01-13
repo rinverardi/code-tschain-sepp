@@ -51,21 +51,28 @@ const Page = () => {
   }
 
   return <>
-    <h1>Create a Game</h1>
-    <p>
-      Pick a unique game identifier and create the game.
-    </p>
-    <div>
-      <label>Game Identifier:</label>
-      <input autoFocus maxLength={8} onChange={handleChange} value={outputId(id)} />
+    <div className="content--pre-game" id="content">
+      <h1>Create a Game</h1>
+      <p>
+        Pick a unique game identifier and create the game.
+      </p>
+      <div>
+        <label>Game Identifier:</label>
+
+        <input
+          autoFocus
+          maxLength={8}
+          onChange={handleChange}
+          value={outputId(id)} />
+      </div>
+      <div>
+        <button onClick={handleCreate}>Create</button>
+        <button onClick={handleCancel}>Cancel</button>
+      </div>
+      <p className="error">
+        {error}
+      </p>
     </div>
-    <div>
-      <button onClick={handleCreate}>Create</button>
-      <button onClick={handleCancel}>Cancel</button>
-    </div>
-    <p className="error">
-      {error}
-    </p>
   </>;
 };
 

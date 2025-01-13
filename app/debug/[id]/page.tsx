@@ -31,13 +31,15 @@ const Page = () => {
   }, []);
 
   return <>
-    <h1>Debug a Game</h1>
-    <pre>
-      {dump}
-    </pre>
-    <p className="error">
-      {error}
-    </p>
+    <div className="content--debug" id="content">
+      <h1>Debug a Game</h1>
+      <pre>
+        {dump}
+      </pre>
+      <p className="error">
+        {error}
+      </p>
+    </div>
   </>;
 };
 
