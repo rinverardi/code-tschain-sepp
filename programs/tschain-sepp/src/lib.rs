@@ -275,6 +275,7 @@ pub mod tschain_sepp {
     #[derive(InitSpace)]
     pub struct Game {
         pub cards: [u8; 36],
+        pub current_card: u8,
 
         #[max_len(8)]
         pub id: String,
