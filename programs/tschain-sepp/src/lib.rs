@@ -395,6 +395,32 @@ pub mod tschain_sepp {
         Ok(())
     }
 
+    pub fn skip_turn(context: Context<SkipTurn>, id: String) -> Result<()> {
+        msg!("Skipping turn in game {}.", id);
+
+        let game: &mut Account<'_, Game> = &mut context.accounts.game;
+
+        // Authorize the signer.
+
+        let player_index = game::find_player(game, context.accounts.signer.key)?;
+
+        if player_index != game.current_player as usize {
+            return Err(error::Code::NotAuthorized.into());
+        }
+
+        // Check the game status.
+
+        if !matches!(game.status, Status::Started) {
+            return Err(error::Code::IllegalStatus.into());
+        }
+
+        // Skip the turn.
+
+        game::next_player(game);
+
+        Ok(())
+    }
+
     pub fn start_game(context: Context<StartGame>, id: String) -> Result<()> {
         msg!("Starting game {}.", id);
 
@@ -505,6 +531,19 @@ pub mod tschain_sepp {
         pub signer: Signer<'info>,
 
         pub system_program: Program<'info, System>,
+    }
+
+    #[derive(Accounts)]
+    #[instruction(id: String)]
+    pub struct SkipTurn<'info> {
+        #[account(
+            mut,
+            seeds = ["game".as_ref(), id.as_ref()],
+            bump,
+        )]
+        pub game: Account<'info, Game>,
+
+        pub signer: Signer<'info>,
     }
 
     #[derive(Accounts)]

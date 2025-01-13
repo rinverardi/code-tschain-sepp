@@ -44,6 +44,7 @@ const Player = ({
   game,
   onAbort,
   onDiscard,
+  onSkip,
   publicKey,
   slot
 }: PlayerProps) => {
@@ -68,8 +69,12 @@ const Player = ({
         onDiscard={available ? onDiscard : null}
         player={slot} />
 
-      {slot == 0 && slot == me && <>
+      {me == 0 && me == slot && <>
         <a href="" onClick={onAbort}>Abort</a>
+      </>}
+
+      {me == game.currentPlayer && me == slot && <>
+        <a href="" onClick={onSkip}>Skip</a>
       </>}
     </>}
   </div>
@@ -79,6 +84,7 @@ type PlayerProps = {
   game: GameAccount;
   onAbort: (event: MouseEvent<HTMLAnchorElement>) => void;
   onDiscard: (card: number) => void;
+  onSkip: (event: MouseEvent<HTMLAnchorElement>) => void;
   publicKey: PublicKey;
   slot: number;
 };

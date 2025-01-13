@@ -64,6 +64,16 @@ export async function callJoinGame(program: Program<TschainSepp>, id: string) {
   }
 }
 
+export async function callSkipTurn(program: Program<TschainSepp>, id: string) {
+  toggleProgress(true);
+
+  try {
+    await program.methods.skipTurn(id).rpc();
+  } finally {
+    toggleProgress(false);
+  }
+}
+
 export async function callStartGame(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
 

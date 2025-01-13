@@ -178,6 +178,10 @@ p {
   margin: 16px 0;
 }
 
+.player {
+  min-width: 200px;
+}
+
 .player__indicator {
   color: #f00;
 }
@@ -294,7 +298,7 @@ p {
 
 @media (width < 800px) {
   .card {
-    margin: 16px 0;
+    margin: 8px 0;
   }
 
   .content--in-game {
@@ -302,13 +306,13 @@ p {
   }
 
   .pile {
-    display: inline-block;
-    margin-right: 16px;
-    vertical-align: top;
+    float: left;
+    margin: 16px 16px 24px 0;
   }
 
   .player {
-    margin: 16px 0;
+    clear: both;
+    margin: 16px 0 24px 0;
   }
 }
 
