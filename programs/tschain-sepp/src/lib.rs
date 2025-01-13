@@ -4,8 +4,62 @@ declare_id!("vKPUHaPCrDoYLdHiiGGstckp4bfyi2Nny8nSf5uGhWU");
 
 pub mod config {
     pub const CARDS_PER_DECK: usize = 36;
+    pub const CARDS_PER_HAND: usize = 5;
+
+    pub const NUMBER_OF_RANKS: usize = 9;
+    pub const NUMBER_OF_SUITS: usize = 4;
 
     pub const PLAYER_LIMIT: usize = 4;
+}
+
+pub mod deck {
+    use super::*;
+
+    pub fn assign_cards(game: &mut Game, key: &Pubkey) -> Result<()> {
+        for card_suit in 0..config::NUMBER_OF_SUITS {
+            for card_rank in 0..config::NUMBER_OF_RANKS {
+                let card_index = card_suit * config::NUMBER_OF_RANKS + card_rank;
+
+                game.deck[card_index] = (0xff00 | (card_suit << 4) | card_rank) as u16;
+            }
+        }
+
+        shuffle(game, key)?;
+
+        Ok(())
+    }
+
+    pub fn assign_players(game: &mut Game) -> () {
+        let mut card_index = 0;
+
+        for player_index in 0..config::PLAYER_LIMIT {
+            let player = &game.players[player_index];
+
+            if player.is_some() {
+                for _ in 0..config::CARDS_PER_HAND {
+                    game.deck[card_index] &= 0x00ff;
+                    game.deck[card_index] |= (player_index << 8) as u16;
+
+                    card_index += 1;
+                }
+            }
+        }
+    }
+
+    fn shuffle(game: &mut Game, key: &Pubkey) -> Result<()> {
+        let mut seed = (Clock::get()?.unix_timestamp as u64)
+            .wrapping_mul(key.to_bytes()[0] as u64)
+            .wrapping_add(key.to_bytes()[1] as u64);
+
+        for card_index in (1..game.deck.len()).rev() {
+            seed = (seed ^ (seed << 13)).wrapping_add(card_index as u64);
+
+            game.deck
+                .swap(card_index, (seed as usize) % (card_index + 1));
+        }
+
+        Ok(())
+    }
 }
 
 pub mod error {
@@ -231,6 +285,9 @@ pub mod tschain_sepp {
         }
 
         // Start the game.
+
+        deck::assign_cards(game, context.accounts.signer.key)?;
+        deck::assign_players(game);
 
         game.status = Status::Started;
 
