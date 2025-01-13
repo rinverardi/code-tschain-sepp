@@ -16,6 +16,7 @@ import {
 import {
   callAbortGame,
   callDiscardCard,
+  callSkipTurn,
   makeProgram
 } from "@tschain-sepp/components/game_program";
 
@@ -60,6 +61,12 @@ const Page = () => {
     callDiscardCard(program, id, card).catch(() => showError("Cannot discard the card!"));
   }
 
+  function handleSkip(event: MouseEvent<HTMLAnchorElement>): void {
+    event.preventDefault();
+
+    callSkipTurn(program, id).catch(() => showError("Cannot skip the turn!"));
+  }
+
   function update(game: GameAccount): void {
     if (game.status.aborted) {
       router.push("../..");
@@ -82,6 +89,7 @@ const Page = () => {
           game={game}
           onAbort={handleAbort}
           onDiscard={handleDiscard}
+          onSkip={handleSkip}
           publicKey={wallet.publicKey}
           slot={0} />
 
@@ -89,6 +97,7 @@ const Page = () => {
           game={game}
           onAbort={null}
           onDiscard={handleDiscard}
+          onSkip={handleSkip}
           publicKey={wallet.publicKey}
           slot={1} />
 
@@ -96,6 +105,7 @@ const Page = () => {
           game={game}
           onAbort={null}
           onDiscard={handleDiscard}
+          onSkip={handleSkip}
           publicKey={wallet.publicKey}
           slot={2} />
 
@@ -103,6 +113,7 @@ const Page = () => {
           game={game}
           onAbort={null}
           onDiscard={handleDiscard}
+          onSkip={handleSkip}
           publicKey={wallet.publicKey}
           slot={3} />
       </>}
