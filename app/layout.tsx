@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => <>
         {children}
       </SolanaProvider>
       <div id="progress">
-        <div />
+        <div id="progress__indicator" />
       </div>
     </body>
   </html>
