@@ -3,7 +3,12 @@
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { callJoin, makeProgram } from "@tschain-sepp/components/game_program";
+
+import {
+  callJoinGame,
+  makeProgram
+} from "@tschain-sepp/components/game_program";
+
 import { inputId, outputId } from "@tschain-sepp/components/id";
 
 import Notifications, {
@@ -39,7 +44,7 @@ const Page = () => {
       return;
     }
 
-    callJoin(program, id)
+    callJoinGame(program, id)
       .then(() => router.push("joining/" + id))
       .catch(() => showError("Cannot join the game!"));
   }

@@ -147,7 +147,7 @@ h1 {
 }
 
 .hand .card--available:hover~.card {
-  transform: rotateZ(12deg) translateX(36px);
+  transform: rotateZ(12deg) translateX(24px);
 }
 
 input {
@@ -163,13 +163,20 @@ p {
   margin: 16px 0;
 }
 
-.player-indicator {
-  animation: bounce 0.3s alternate infinite;
+.player__indicator {
+  color: #f00;
 }
 
-.player-indicator::after {
-  color: #f00;
+.player__indicator--left::after {
+  animation: bounce--left 0.3s alternate infinite;
+  content: '▶';
+  margin-right: 8px;
+}
+
+.player__indicator--right::after {
+  animation: bounce--right 0.3s alternate infinite;
   content: '◀';
+  margin-left: 8px;
 }
 
 #progress {
@@ -240,13 +247,27 @@ p {
   src: url('/fonts/oxanium.woff2') format('woff2');
 }
 
-@keyframes bounce {
+@keyframes bounce--left {
   from {
-    margin-left: 4px;
+    padding-left: 16px;
+    padding-right: 0px;
   }
 
   to {
-    margin-left: 16px;
+    padding-left: 0px;
+    padding-right: 16px;
+  }
+}
+
+@keyframes bounce--right {
+  from {
+    padding-left: 0px;
+    padding-right: 16px;
+  }
+
+  to {
+    padding-left: 16px;
+    padding-right: 0px;
   }
 }
 
@@ -305,15 +326,15 @@ p {
   }
 
   #player0 {
-    left: 24px;
-    top: 80px;
+    left: 48px;
+    top: 104px;
   }
 
   #player1 {
     bottom: 50%;
-    right: 24px;
+    right: 48px;
     text-align: right;
-    top: 80px;
+    top: 104px;
   }
 
   #player1 .hand {
@@ -321,13 +342,13 @@ p {
   }
 
   #player2 {
-    bottom: 24px;
-    left: 24px;
+    bottom: 48px;
+    left: 48px;
   }
 
   #player3 {
-    bottom: 24px;
-    right: 24px;
+    bottom: 48px;
+    right: 48px;
     text-align: right;
   }
 

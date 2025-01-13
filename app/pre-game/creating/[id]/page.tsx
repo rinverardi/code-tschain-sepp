@@ -12,8 +12,8 @@ import {
 } from "@tschain-sepp/components/game_account";
 
 import {
-  callAbort,
-  callStart,
+  callAbortGame,
+  callStartGame,
   makeProgram
 } from "@tschain-sepp/components/game_program";
 
@@ -52,7 +52,7 @@ const Page = () => {
       return;
     }
 
-    callAbort(program, id)
+    callAbortGame(program, id)
       .then(() => router.push("../.."))
       .catch(() => showError("Cannot abort the game!"));
   }
@@ -63,7 +63,7 @@ const Page = () => {
       return;
     }
 
-    callStart(program, id)
+    callStartGame(program, id)
       .then(() => router.push("../../in-game/" + id))
       .catch(() => showError("Cannot start the game!"));
   }

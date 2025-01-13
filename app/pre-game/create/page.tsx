@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import {
-  callCreate,
+  callCreateGame,
   makeProgram
 } from "@tschain-sepp/components/game_program";
 
@@ -44,7 +44,7 @@ const Page = () => {
       return;
     }
 
-    callCreate(program, id)
+    callCreateGame(program, id)
       .then(() => router.push("creating/" + id))
       .catch(() => showError("Cannot create the game!"));
   }

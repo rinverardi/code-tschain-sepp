@@ -39,20 +39,24 @@ export function getMe(game: GameAccount, publicKey: PublicKey): number {
   throw new Error("Unknown player");
 }
 
-const Player = ({ game, publicKey, slot }: PlayerProps) => {
+const Player = ({ game, onDiscard, publicKey, slot }: PlayerProps) => {
   const me = getMe(game, publicKey);
 
   return <div className="player" id={"player" + slot}>
+    {game.currentPlayer == slot &&
+      <span className="player__indicator player__indicator--left" />}
+
     <label>{deriveLabel(game, slot)}</label>
 
     {game.currentPlayer == slot &&
-      <span className="player-indicator" />}
+      <span className="player__indicator player__indicator--right" />}
 
     {game.players[slot] &&
       <PlayingHand
         available={game.currentPlayer == me && game.currentPlayer == slot}
         deck={game.deck}
         mine={slot == me}
+        onDiscard={onDiscard}
         player={slot} />
     }
   </div>
@@ -60,6 +64,7 @@ const Player = ({ game, publicKey, slot }: PlayerProps) => {
 
 type PlayerProps = {
   game: GameAccount;
+  onDiscard: (card: number) => void;
   publicKey: PublicKey;
   slot: number;
 };

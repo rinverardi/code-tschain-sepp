@@ -13,7 +13,7 @@ import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 const STAKE = new BN(LAMPORTS_PER_SOL / 1000);
 
-export async function callAbort(program: Program<TschainSepp>, id: string) {
+export async function callAbortGame(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
 
   try {
@@ -34,7 +34,7 @@ export async function callAbort(program: Program<TschainSepp>, id: string) {
   }
 }
 
-export async function callCreate(program: Program<TschainSepp>, id: string) {
+export async function callCreateGame(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
 
   try {
@@ -44,7 +44,17 @@ export async function callCreate(program: Program<TschainSepp>, id: string) {
   }
 }
 
-export async function callJoin(program: Program<TschainSepp>, id: string) {
+export async function callDiscardCard(program: Program<TschainSepp>, id: string, card: number) {
+  toggleProgress(true);
+
+  try {
+    await program.methods.discardCard(id, card).rpc();
+  } finally {
+    toggleProgress(false);
+  }
+}
+
+export async function callJoinGame(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
 
   try {
@@ -54,7 +64,7 @@ export async function callJoin(program: Program<TschainSepp>, id: string) {
   }
 }
 
-export async function callStart(program: Program<TschainSepp>, id: string) {
+export async function callStartGame(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
 
   try {

@@ -2,6 +2,39 @@ use anchor_lang::prelude::*;
 
 declare_id!("vKPUHaPCrDoYLdHiiGGstckp4bfyi2Nny8nSf5uGhWU");
 
+pub mod card {
+    pub fn clear_player(card: &mut u16) -> () {
+        *card |= 0xff00;
+    }
+
+    pub fn get_player(card: u16) -> usize {
+        ((card & 0xff00) >> 8) as usize
+    }
+
+    pub fn get_rank(card: u16) -> usize {
+        (card & 0x000f) as usize
+    }
+
+    pub fn get_suit(card: u16) -> usize {
+        ((card & 0x00f0) >> 4) as usize
+    }
+
+    pub fn set_player(card: &mut u16, player: usize) -> () {
+        *card &= 0x00ff;
+        *card |= (player << 8) as u16;
+    }
+
+    pub fn set_rank(card: &mut u16, rank: usize) -> () {
+        *card &= 0xfff0;
+        *card |= rank as u16;
+    }
+
+    pub fn set_suit(card: &mut u16, suit: usize) -> () {
+        *card &= 0xff0f;
+        *card |= (suit << 4) as u16;
+    }
+}
+
 pub mod config {
     pub const CARDS_PER_DECK: usize = 36;
     pub const CARDS_PER_HAND: usize = 5;
@@ -16,11 +49,13 @@ pub mod deck {
     use super::*;
 
     pub fn assign_cards(game: &mut Game, key: &Pubkey) -> Result<()> {
-        for card_suit in 0..config::NUMBER_OF_SUITS {
-            for card_rank in 0..config::NUMBER_OF_RANKS {
-                let card_index = card_suit * config::NUMBER_OF_RANKS + card_rank;
+        for suit in 0..config::NUMBER_OF_SUITS {
+            for rank in 0..config::NUMBER_OF_RANKS {
+                let card_index = suit * config::NUMBER_OF_RANKS + rank;
 
-                game.deck[card_index] = (0xff00 | (card_suit << 4) | card_rank) as u16;
+                card::clear_player(&mut game.deck[card_index]);
+                card::set_rank(&mut game.deck[card_index], rank);
+                card::set_suit(&mut game.deck[card_index], suit);
             }
         }
 
@@ -30,19 +65,35 @@ pub mod deck {
     }
 
     pub fn assign_players(game: &mut Game) -> () {
-        let mut card_index = 0;
+        let mut card_index = 1;
 
         for player_index in 0..config::PLAYER_LIMIT {
             let player = &game.players[player_index];
 
             if player.is_some() {
                 for _ in 0..config::CARDS_PER_HAND {
-                    game.deck[card_index] &= 0x00ff;
-                    game.deck[card_index] |= (player_index << 8) as u16;
+                    card::set_player(&mut game.deck[card_index], player_index);
 
                     card_index += 1;
                 }
             }
+        }
+    }
+
+    pub fn find_card(card: u16, game: &Game) -> Result<usize> {
+        game.deck
+            .iter()
+            .position(|&candidate| candidate == card)
+            .ok_or(error::Code::UnknownCard.into())
+    }
+
+    pub fn find_player(card: u16) -> Result<usize> {
+        let player_index = card::get_player(card);
+
+        if player_index < config::PLAYER_LIMIT {
+            Ok(player_index)
+        } else {
+            Err(error::Code::UnknownPlayer.into())
         }
     }
 
@@ -70,6 +121,9 @@ pub mod error {
         #[msg("Already exists")]
         AlreadyExists,
 
+        #[msg("Illegal card")]
+        IllegalCard,
+
         #[msg("Illegal status")]
         IllegalStatus,
 
@@ -81,6 +135,12 @@ pub mod error {
 
         #[msg("Not found")]
         NotFound,
+
+        #[msg("Unknown card")]
+        UnknownCard,
+
+        #[msg("Unknown player")]
+        UnknownPlayer,
     }
 }
 
@@ -91,7 +151,7 @@ pub mod game {
         let player = game
             .players
             .iter_mut()
-            .find(|player| player.is_none())
+            .find(|candidate| candidate.is_none())
             .ok_or(error::Code::NotFound)?;
 
         *player = Some(*key);
@@ -99,10 +159,49 @@ pub mod game {
         Ok(())
     }
 
+    pub fn discard_card(card: u16, game: &mut Game) -> Result<()> {
+        let current_card = game.deck[game.current_card as usize];
+
+        let same_rank = card::get_rank(card) == card::get_rank(current_card);
+        let same_suit = card::get_suit(card) == card::get_suit(current_card);
+
+        if !same_rank && !same_suit {
+            Err(error::Code::IllegalCard.into())
+        } else {
+            let card_index = deck::find_card(card, game)?;
+
+            game.current_card = card_index as u8;
+
+            card::clear_player(&mut game.deck[card_index]);
+
+            Ok(())
+        }
+    }
+
+    pub fn find_player(game: &Game, key: &Pubkey) -> Result<usize> {
+        game.players
+            .iter()
+            .position(|candidate| candidate.as_ref() == Some(key))
+            .ok_or(error::Code::UnknownPlayer.into())
+    }
+
     pub fn has_player(game: &Game, key: &Pubkey) -> bool {
         game.players
             .iter()
             .any(|player| player.as_ref() == Some(key))
+    }
+
+    pub fn next_player(game: &mut Game) -> () {
+        let mut player_index = game.current_player as usize;
+
+        for _ in 0..config::PLAYER_LIMIT {
+            player_index = (player_index + 1) % config::PLAYER_LIMIT;
+
+            if game.players[player_index].is_some() {
+                game.current_player = player_index as u8;
+                break;
+            }
+        }
     }
 }
 
@@ -159,7 +258,7 @@ pub mod tschain_sepp {
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
 
-        // Authorize the game master.
+        // Authorize the signer.
 
         if &game.players[0].unwrap() != context.accounts.signer.key {
             return Err(error::Code::NotAuthorized.into());
@@ -189,14 +288,14 @@ pub mod tschain_sepp {
             .players
             .iter()
             .skip(1)
-            .filter_map(|payer| payer.as_ref());
+            .filter_map(|candidate| candidate.as_ref());
 
         for player in players {
             let account = context
                 .remaining_accounts
                 .iter()
-                .find(|account| account.key == player)
-                .ok_or(error::Code::NotFound)?;
+                .find(|candidate| candidate.key == player)
+                .ok_or(error::Code::UnknownPlayer)?;
 
             stake::give(&game.to_account_info(), account, game.stake)?;
         }
@@ -228,18 +327,41 @@ pub mod tschain_sepp {
         Ok(())
     }
 
+    pub fn discard_card(context: Context<DiscardCard>, id: String, card: u16) -> Result<()> {
+        msg!("Discarding card {} in game {}.", card, id);
+
+        let game: &mut Account<'_, Game> = &mut context.accounts.game;
+
+        // Authorize the signer.
+
+        let player_index = game::find_player(game, context.accounts.signer.key)?;
+
+        if player_index != game.current_player as usize {
+            return Err(error::Code::NotAuthorized.into());
+        }
+
+        if player_index != deck::find_player(card)? {
+            return Err(error::Code::NotAuthorized.into());
+        }
+
+        // Discard the card.
+
+        game::discard_card(card, game)?;
+        game::next_player(game);
+
+        Ok(())
+    }
+
     pub fn join_game(context: Context<JoinGame>, id: String) -> Result<()> {
         msg!("Joining game {}.", id);
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
 
-        // Prevent the game master from joining.
+        // Authorize the signer
 
         if &game.players[0].unwrap() == context.accounts.signer.key {
             return Err(error::Code::NotAuthorized.into());
         }
-
-        // Prevent the game participant from joining more than once.
 
         if game::has_player(game, context.accounts.signer.key) {
             return Err(error::Code::AlreadyExists.into());
@@ -272,7 +394,7 @@ pub mod tschain_sepp {
 
         let game: &mut Account<'_, Game> = &mut context.accounts.game;
 
-        // Authorize the game master.
+        // Authorize the signer.
 
         if &game.players[0].unwrap() != context.accounts.signer.key {
             return Err(error::Code::NotAuthorized.into());
@@ -332,6 +454,19 @@ pub mod tschain_sepp {
         pub signer: Signer<'info>,
 
         pub system_program: Program<'info, System>,
+    }
+
+    #[derive(Accounts)]
+    #[instruction(id: String)]
+    pub struct DiscardCard<'info> {
+        #[account(
+            mut,
+            seeds = ["game".as_ref(), id.as_ref()],
+            bump,
+        )]
+        pub game: Account<'info, Game>,
+
+        pub signer: Signer<'info>,
     }
 
     #[account]

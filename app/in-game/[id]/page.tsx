@@ -6,8 +6,18 @@ import { useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import DiscardPile from "@tschain-sepp/components/discard_pile";
 import DrawPile from "@tschain-sepp/components/draw_pile";
-import { deriveAddress, fetchGame, watchGame } from "@tschain-sepp/components/game_account";
-import { makeProgram } from "@tschain-sepp/components/game_program";
+
+import {
+  deriveAddress,
+  fetchGame,
+  watchGame
+} from "@tschain-sepp/components/game_account";
+
+import {
+  callDiscardCard,
+  makeProgram
+} from "@tschain-sepp/components/game_program";
+
 import { inputId } from "@tschain-sepp/components/id";
 
 import Notifications, {
@@ -38,6 +48,10 @@ const Page = () => {
       .catch(() => showError("Cannot fetch the game!"));
   }, []);
 
+  function handleDiscard(card: number): void {
+    callDiscardCard(program, id, card);
+  }
+
   return <>
     <Notifications position="top-center" />
 
@@ -48,21 +62,25 @@ const Page = () => {
 
         <Player
           game={game}
+          onDiscard={handleDiscard}
           publicKey={wallet.publicKey}
           slot={0} />
 
         <Player
           game={game}
+          onDiscard={handleDiscard}
           publicKey={wallet.publicKey}
           slot={1} />
 
         <Player
           game={game}
+          onDiscard={handleDiscard}
           publicKey={wallet.publicKey}
           slot={2} />
 
         <Player
           game={game}
+          onDiscard={handleDiscard}
           publicKey={wallet.publicKey}
           slot={3} />
       </>}
