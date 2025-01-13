@@ -130,11 +130,11 @@ pub mod error {
         #[msg("Insufficient funds")]
         InsufficientFunds,
 
+        #[msg("Limit exceeded")]
+        LimitExceeded,
+
         #[msg("Not authorized")]
         NotAuthorized,
-
-        #[msg("Not found")]
-        NotFound,
 
         #[msg("Unknown card")]
         UnknownCard,
@@ -152,7 +152,7 @@ pub mod game {
             .players
             .iter_mut()
             .find(|candidate| candidate.is_none())
-            .ok_or(error::Code::NotFound)?;
+            .ok_or(error::Code::LimitExceeded)?;
 
         *player = Some(*key);
 
@@ -342,6 +342,12 @@ pub mod tschain_sepp {
 
         if player_index != deck::find_player(card)? {
             return Err(error::Code::NotAuthorized.into());
+        }
+
+        // Check the game status.
+
+        if !matches!(game.status, Status::Started) {
+            return Err(error::Code::IllegalStatus.into());
         }
 
         // Discard the card.
