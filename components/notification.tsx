@@ -8,7 +8,7 @@ const Notifications = ({ position }: ErrorProps) => (
   <Toaster
     containerStyle={{
       right: "24px",
-      bottom: "40px",
+      bottom: "24px",
     }}
     position={position}
     toastOptions={{
