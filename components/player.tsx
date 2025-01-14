@@ -38,12 +38,12 @@ const Player = ({
   const canAbort = me == 0 && me == slot;
 
   return <div className="player" id={"player" + slot}>
-    {canPlay &&
+    {game.currentPlayer == slot &&
       <span className="player__indicator player__indicator--left" />}
 
     <label>{deriveLabel(game, slot)}</label>
 
-    {canPlay &&
+    {game.currentPlayer == slot &&
       <span className="player__indicator player__indicator--right" />}
 
     {game.players[slot] && <>
