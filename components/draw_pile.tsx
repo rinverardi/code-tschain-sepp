@@ -2,20 +2,22 @@
 
 import PlayingCard from "@tschain-sepp/components/playing_card";
 
-const DrawPile = ({ available, onDraw }: DrawPileProps) => <>
+const DrawPile = ({
+  canPlay,
+  onDraw
+}: DrawPileProps) =>
   <div className="pile" id="draw-pile">
     <label>Draw</label>
 
     <PlayingCard
-      available={available}
+      canPlay={canPlay}
+      canSee={false}
       card={NaN}
-      onDraw={onDraw}
-      onDiscard={null} />
-  </div>
-</>;
+      onClick={canPlay && onDraw} />
+  </div>;
 
 type DrawPileProps = {
-  available: boolean;
+  canPlay: boolean;
   onDraw: () => void;
 };
 

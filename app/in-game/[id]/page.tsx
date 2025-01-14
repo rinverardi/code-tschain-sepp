@@ -4,6 +4,7 @@ import { IdlAccounts } from "@coral-xyz/anchor";
 import { useParams, useRouter } from "next/navigation";
 import { MouseEvent, useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import DiscardPile from "@tschain-sepp/components/discard_pile";
 import DrawPile from "@tschain-sepp/components/draw_pile";
 
@@ -27,10 +28,24 @@ import Notifications, {
   showError
 } from "@tschain-sepp/components/notification";
 
-import Player, { getMe } from "@tschain-sepp/components/player";
+import Player from "@tschain-sepp/components/player";
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
+
+export function getMe(game: GameAccount, publicKey: PublicKey): number {
+  if (!publicKey) {
+    return NaN;
+  }
+
+  for (let index = 0; index < game.players.length; index++) {
+    if (game.players[index] && game.players[index].equals(publicKey)) {
+      return index;
+    }
+  }
+
+  throw new Error("Unknown player");
+}
 
 const Page = () => {
   const { connection } = useConnection();
@@ -88,41 +103,49 @@ const Page = () => {
     <div className="content--in-game" id="in-game">
       {game && <>
         <DrawPile
-          available={game.currentPlayer == me}
+          canPlay={me == game.currentPlayer}
           onDraw={handleDraw} />
 
         <DiscardPile card={game.deck[game.currentCard]} />
 
         <Player
+          canPlay={me == game.currentPlayer && me == 0}
+          canSee={me == 0}
           game={game}
+          me={me}
           onAbort={handleAbort}
           onDiscard={handleDiscard}
           onSkip={handleSkip}
-          publicKey={wallet.publicKey}
           slot={0} />
 
         <Player
+          canPlay={me == game.currentPlayer && me == 1}
+          canSee={me == 1}
           game={game}
+          me={me}
           onAbort={null}
           onDiscard={handleDiscard}
           onSkip={handleSkip}
-          publicKey={wallet.publicKey}
           slot={1} />
 
         <Player
+          canPlay={me == game.currentPlayer && me == 2}
+          canSee={me == 2}
           game={game}
+          me={me}
           onAbort={null}
           onDiscard={handleDiscard}
           onSkip={handleSkip}
-          publicKey={wallet.publicKey}
           slot={2} />
 
         <Player
+          canPlay={me == game.currentPlayer && me == 3}
+          canSee={me == 3}
           game={game}
+          me={me}
           onAbort={null}
           onDiscard={handleDiscard}
           onSkip={handleSkip}
-          publicKey={wallet.publicKey}
           slot={3} />
       </>}
     </div>

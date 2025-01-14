@@ -14,20 +14,28 @@ function derivePlayer(card: number): number {
   throw new Error("Illegal player");
 }
 
-const PlayingHand = ({ available, deck, mine, onDiscard, player }: PlayingHandProps) =>
-  <div className="hand">
-    {deck.map((card, index) => derivePlayer(card) == player && <PlayingCard
-      available={available}
-      card={mine ? card : NaN}
-      key={index}
-      onDiscard={onDiscard}
-      onDraw={null} />)}
-  </div>;
+const PlayingHand = ({
+  canPlay,
+  canSee,
+  deck,
+  onDiscard,
+  player
+}: PlayingHandProps) => {
+  const cards = deck.filter((candidate) => derivePlayer(candidate) == player);
 
+  return <div className="hand">
+    {cards.map((card, card_index) => <PlayingCard
+      canPlay={canPlay}
+      canSee={canSee}
+      card={card}
+      key={card_index}
+      onClick={onDiscard} />)}
+  </div>;
+}
 type PlayingHandProps = {
-  available: boolean;
+  canPlay: boolean;
+  canSee: boolean;
   deck: number[];
-  mine: boolean;
   onDiscard: (card: number) => void,
   player: number
 };

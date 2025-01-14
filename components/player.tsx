@@ -1,6 +1,5 @@
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { MouseEvent } from "react";
-import { PublicKey } from "@solana/web3.js";
 import PlayingHand from "@tschain-sepp/components/playing_hand";
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
@@ -26,66 +25,49 @@ export function deriveLabel(game: GameAccount, slot: number): string {
   throw new Error("Illegal slot");
 }
 
-export function getMe(game: GameAccount, publicKey: PublicKey): number {
-  if (!publicKey) {
-    return NaN;
-  }
-
-  for (let index = 0; index < game.players.length; index++) {
-    if (game.players[index] && game.players[index].equals(publicKey)) {
-      return index;
-    }
-  }
-
-  throw new Error("Unknown player");
-}
-
 const Player = ({
+  canPlay,
+  canSee,
   game,
+  me,
   onAbort,
   onDiscard,
   onSkip,
-  publicKey,
   slot
 }: PlayerProps) => {
-  const me = getMe(game, publicKey);
-
-  const available = game.currentPlayer == me && game.currentPlayer == slot;
+  const canAbort = me == 0 && me == slot;
 
   return <div className="player" id={"player" + slot}>
-    {game.currentPlayer == slot &&
+    {canPlay &&
       <span className="player__indicator player__indicator--left" />}
 
     <label>{deriveLabel(game, slot)}</label>
 
-    {game.currentPlayer == slot &&
+    {canPlay &&
       <span className="player__indicator player__indicator--right" />}
 
     {game.players[slot] && <>
       <PlayingHand
-        available={available}
+        canPlay={canPlay}
+        canSee={canSee}
         deck={game.deck}
-        mine={slot == me}
-        onDiscard={available ? onDiscard : null}
+        onDiscard={canPlay ? onDiscard : null}
         player={slot} />
 
-      {me == 0 && me == slot && <>
-        <a href="" onClick={onAbort}>Abort</a>
-      </>}
-
-      {me == game.currentPlayer && me == slot && <>
-        <a href="" onClick={onSkip}>Skip</a>
-      </>}
+      {canAbort && <a href="" onClick={onAbort}>Abort</a>}
+      {canPlay && <a href="" onClick={onSkip}>Skip</a>}
     </>}
-  </div>
-};
+  </div>;
+}
 
 type PlayerProps = {
+  canPlay: boolean;
+  canSee: boolean;
   game: GameAccount;
+  me: number,
   onAbort: (event: MouseEvent<HTMLAnchorElement>) => void;
   onDiscard: (card: number) => void;
   onSkip: (event: MouseEvent<HTMLAnchorElement>) => void;
-  publicKey: PublicKey;
   slot: number;
 };
 
