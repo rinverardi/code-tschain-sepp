@@ -101,7 +101,7 @@ const Page = () => {
 
   return (
     <>
-      <Notifications position="bottom-center" />
+      <Notifications />
 
       <div className="content--in-game" id="in-game">
         {game && (

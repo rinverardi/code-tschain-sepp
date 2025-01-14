@@ -77,7 +77,7 @@ const Page = () => {
 
   return (
     <>
-      <Notifications position="bottom-right" />
+      <Notifications />
 
       <div className="content--debug" id="content">
         {game && (

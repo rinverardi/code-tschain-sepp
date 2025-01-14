@@ -1,16 +1,16 @@
-import toast, { Toaster, ToastPosition } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 export function showError(message: String): void {
   toast.error(message);
 }
 
-const Notifications = ({ position }: ErrorProps) => (
+const Notifications = () => (
   <Toaster
     containerStyle={{
       right: "24px",
       bottom: "24px",
     }}
-    position={position}
+    position="bottom-center"
     toastOptions={{
       error: {
         style: {
@@ -27,9 +27,5 @@ const Notifications = ({ position }: ErrorProps) => (
     }}
   />
 );
-
-type ErrorProps = {
-  position: ToastPosition;
-};
 
 export default Notifications;

@@ -51,7 +51,7 @@ const Page = () => {
 
   return (
     <>
-      <Notifications position="bottom-right" />
+      <Notifications />
 
       <div className="content--pre-game" id="content">
         <h1>Create a Game</h1>

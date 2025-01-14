@@ -53,7 +53,7 @@ const Page = () => {
 
   return (
     <div className="content--post-game" id="content">
-      <Notifications position="bottom-right" />
+       <Notifications />
 
       {isLoser || isWinner || <h1>Game Over</h1>}
 

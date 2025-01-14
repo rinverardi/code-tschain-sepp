@@ -86,7 +86,7 @@ const Page = () => {
 
   return (
     <>
-      <Notifications position="bottom-right" />
+      <Notifications />
 
       <div className="content--pre-game" id="content">
         <h1>Waiting for Oponnents</h1>
