@@ -2,17 +2,17 @@
 
 import PlayingCard from "@tschain-sepp/components/playing_card";
 
-const DiscardPile = ({ card }: DiscardPileProps) => <>
+const DiscardPile = ({ card }: DiscardPileProps) =>
   <div className="pile" id="discard-pile">
     <label>Discard</label>
 
     <PlayingCard
-      available={false}
+      canPlay={false}
+      canSee={true}
       card={card}
       onDiscard={null}
       onDraw={null} />
-  </div>
-</>;
+  </div>;
 
 type DiscardPileProps = {
   card: number;

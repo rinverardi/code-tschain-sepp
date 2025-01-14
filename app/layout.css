@@ -12,7 +12,7 @@
 a,
 a:active,
 a:visited {
-  color: #678;
+  color: var(--blueish-dark);
   text-decoration: none;
 }
 
@@ -25,12 +25,12 @@ a+a {
 }
 
 body {
-  background: #fff;
+  background: var(--white);
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #888;
+  background: var(--white);
+  border: 1px solid var(--gray);
   border-radius: 8px;
   height: 160px;
   position: relative;
@@ -40,13 +40,8 @@ body {
   width: 112px;
 }
 
-.card--available:hover {
-  cursor: pointer;
-  transform: translateY(-8px) rotateZ(-2deg);
-}
-
 .card--facedown::after {
-  background: #abc;
+  background: var(--blueish-light);
   border-radius: 6px;
   bottom: 6px;
   content: '';
@@ -100,6 +95,11 @@ body {
   transform: rotate(180deg);
 }
 
+.card--playable:hover {
+  cursor: pointer;
+  transform: translateY(-8px) rotateZ(-2deg);
+}
+
 #content {
   padding: 0 24px 24px 24px;
 }
@@ -117,10 +117,10 @@ body {
 }
 
 .content--pre-game button {
-  background: #000;
-  border: 2px solid #000;
+  background: var(--black);
+  border: 2px solid var(--black);
   border-radius: 4px;
-  color: #fff;
+  color: var(--white);
   cursor: pointer;
   margin: 8px 16px 8px 0;
   padding: 10px 8px;
@@ -128,8 +128,8 @@ body {
 }
 
 .content--pre-game button:active {
-  background: #fff;
-  color: #000;
+  background: var(--white);
+  color: var(--black);
 }
 
 .content--pre-game label {
@@ -140,7 +140,7 @@ body {
 }
 
 .content--pre-game output {
-  border: 2px solid #000;
+  border: 2px solid var(--black);
   border-radius: 4px;
   display: inline-block;
   margin: 8px 16px 8px 0;
@@ -166,7 +166,7 @@ h1 {
 }
 
 input {
-  border: 2px solid #000;
+  border: 2px solid var(--black);
   border-radius: 4px;
   margin: 8px 16px 8px 0;
   padding: 8px;
@@ -178,12 +178,8 @@ p {
   margin: 16px 0;
 }
 
-.player {
-  min-width: 200px;
-}
-
 .player__indicator {
-  color: #f00;
+  color: var(--red);
 }
 
 .player__indicator--left::after {
@@ -199,10 +195,9 @@ p {
 }
 
 #progress {
-  background: #eee;
+  background: var(--white);
   display: none;
   left: 0;
-  opacity: 0.9;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -211,7 +206,7 @@ p {
 
 #progress__indicator {
   animation: spin 1s ease-in-out infinite;
-  border: 4px solid #000;
+  border: 4px solid var(--blueish-dark);
   border-radius: 50%;
   border-top-color: transparent;
   height: 96px;
@@ -222,29 +217,40 @@ p {
   width: 96px;
 }
 
+:root {
+  --black: #000;
+  --blue: #44b;
+  --blueish-dark: #678;
+  --blueish-light: #abc;
+  --gray: #888;
+  --green: #282;
+  --red: #c44;
+  --white: #fff;
+}
+
 .suit--blue {
-  color: #44b;
+  color: var(--blue);
 }
 
 .suit--green {
-  color: #282;
+  color: var(--green);
 }
 
 .suit--red {
-  color: #c44;
+  color: (var--red);
 }
 
 #wallet {
   align-items: center;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--black);
+  color: var(--white);
   display: flex;
   padding: 2px 0;
   justify-content: space-between;
 }
 
 #wallet button {
-  background-color: #000;
+  background-color: var(--black);
   border-radius: 0;
   font-family: 'Oxanium', serif;
   font-size: 20px;
@@ -252,8 +258,8 @@ p {
 }
 
 #wallet button:active {
-  background-color: #fff;
-  color: #000;
+  background-color: var(--white);
+  color: var(--black);
 }
 
 #wallet output {

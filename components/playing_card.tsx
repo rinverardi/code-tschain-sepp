@@ -33,11 +33,9 @@ function makeFigures(rank: string, suit: string): JSX.Element {
   const rankValue = Number(rank);
 
   if (isNaN(rankValue)) {
-    return <>
-      <div className="card__figure--1">
-        <span>{rank == "A" ? suit : rank}</span>
-      </div>
-    </>;
+    return <div className="card__figure--1">
+      <span>{rank == "A" ? suit : rank}</span>
+    </div>;
   } else {
     const suits = [];
 
@@ -45,56 +43,53 @@ function makeFigures(rank: string, suit: string): JSX.Element {
       suits.push(<span key={index}>{suit}</span>)
     }
 
-    return <>
-      <div className="card__figure--n">
-        {suits}
-      </div>
-    </>;
+    return <div className="card__figure--n">
+      {suits}
+    </div>;
   }
 }
 
-const PlayingCard = ({ available, card, onDiscard, onDraw }: PlayingCardProps) => {
-  const availability = available ? "card--available " : "";
+const PlayingCard = ({
+  canPlay,
+  canSee,
+  card,
+  onClick
+}: PlayingCardProps) => {
+  const playability = canPlay ? "card--playable " : "";
 
   function handleClick() {
-    if (onDiscard) {
-      onDiscard(card);
-    }
-
-    if (onDraw) {
-      onDraw();
+    if (onClick) {
+      onClick(card);
     }
   }
 
-  if (isNaN(card)) {
-    return <div className={`card ${availability} card--facedown`} onClick={handleClick} />;
-  } else {
+  if (canSee) {
     const rank = deriveRank(card);
     const [suit, suitColor] = deriveSuit(card);
 
-    return <>
-      <div className={`card ${availability} card--faceup suit--${suitColor}`} onClick={handleClick}>
-        <div className="card__index">
-          <span>{rank}</span>
-          <br />
-          <span>{suit}</span>
-        </div>
-        <div className="card__index card__index--bottom">
-          <span>{rank}</span>
-          <br />
-          <span>{suit}</span>
-        </div>
-        {makeFigures(rank, suit)}
+    return <div className={`card card--faceup ${playability} suit--${suitColor}`} onClick={handleClick}>
+      <div className="card__index">
+        <span>{rank}</span>
+        <br />
+        <span>{suit}</span>
       </div>
-    </>;
+      <div className="card__index card__index--bottom">
+        <span>{rank}</span>
+        <br />
+        <span>{suit}</span>
+      </div>
+      {makeFigures(rank, suit)}
+    </div>;
+  } else {
+    return <div className={`card card--facedown ${playability}`} onClick={handleClick} />;
   }
 };
 
 type PlayingCardProps = {
-  available: boolean;
+  canPlay: boolean;
+  canSee: boolean;
   card: number;
-  onDiscard: (card: number) => void;
-  onDraw: () => void;
+  onClick: (card: number) => void;
 };
 
 export default PlayingCard;
