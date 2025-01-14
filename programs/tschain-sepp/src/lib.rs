@@ -6,6 +6,9 @@ pub mod card {
     pub const PILE_DISCARD: usize = 0xfe;
     pub const PILE_DRAW: usize = 0xff;
 
+    pub const RANK_SEVEN: usize = 0x01;
+    pub const RANK_EIGHT: usize = 0x02;
+
     pub fn can_draw(card: u16) -> bool {
         (card & 0xff00) >> 8 == PILE_DRAW as u16
     }
@@ -181,6 +184,16 @@ pub mod game {
             game.current_card = card_index as u8;
 
             card::set_holder(&mut game.deck[card_index], card::PILE_DISCARD);
+            game::next_player(game);
+
+            if card::get_rank(card) == card::RANK_SEVEN {
+                game::draw_card(game).ok();
+                game::draw_card(game).ok();
+            }
+
+            if card::get_rank(card) == card::RANK_EIGHT {
+                game::next_player(game);
+            }
 
             Ok(())
         }
@@ -375,7 +388,6 @@ pub mod tschain_sepp {
         // Discard the card.
 
         game::discard_card(card, game)?;
-        game::next_player(game);
 
         Ok(())
     }
