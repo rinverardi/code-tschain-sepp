@@ -19,9 +19,10 @@ const Page = () => {
         matched in turn by each player, either by color or by rank.
       </p>
       <p>
-        If the current player does not have a matching card, they must draw a
-        card from the draw pile. If the drawn card matches, it can be played
-        immediately. If it does not match, the turn passes to the next player.
+        If the current player does not have a matching card in their hand, they
+        may either draw a card from the draw pile or skip their turn. If the
+        drawn card matches, it can be played immediately. If the drawn card does
+        not match, they can either draw another card or skip their turn.
       </p>
       <p>
         If a player plays a seven, the next player must draw two cards. If a
