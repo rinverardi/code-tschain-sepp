@@ -5,6 +5,9 @@ import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
 
+export const PILE_DISCARD = 0xfe;
+export const PILE_DRAW = 0xff;
+
 export function deriveAddress(program: Program<TschainSepp>, id: string): PublicKey {
   const [address, _] = PublicKey.findProgramAddressSync(
     [Buffer.from("game"), Buffer.from(id)],

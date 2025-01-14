@@ -161,7 +161,7 @@ h1 {
   margin-left: -84px;
 }
 
-.hand .card--available:hover~.card {
+.hand .card--playable:hover~.card {
   transform: rotateZ(12deg) translateX(24px);
 }
 

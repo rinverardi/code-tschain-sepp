@@ -50,7 +50,7 @@ const Page = () => {
   }
 
   return <>
-    <Notifications position="top-right" />
+    <Notifications position="bottom-right" />
 
     <div className="content--pre-game" id="content">
       <h1>Create a Game</h1>

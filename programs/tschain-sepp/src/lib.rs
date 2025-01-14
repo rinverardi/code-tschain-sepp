@@ -3,11 +3,14 @@ use anchor_lang::prelude::*;
 declare_id!("vKPUHaPCrDoYLdHiiGGstckp4bfyi2Nny8nSf5uGhWU");
 
 pub mod card {
-    pub fn clear_player(card: &mut u16) -> () {
-        *card |= 0xff00;
+    pub const PILE_DISCARD: usize = 0xfe;
+    pub const PILE_DRAW: usize = 0xff;
+
+    pub fn can_draw(card: u16) -> bool {
+        (card & 0xff00) >> 8 == PILE_DRAW as u16
     }
 
-    pub fn get_player(card: u16) -> usize {
+    pub fn get_holder(card: u16) -> usize {
         ((card & 0xff00) >> 8) as usize
     }
 
@@ -19,13 +22,9 @@ pub mod card {
         ((card & 0x00f0) >> 4) as usize
     }
 
-    pub fn has_player(card: u16) -> bool {
-        (card & 0xff00) != 0xff00
-    }
-
-    pub fn set_player(card: &mut u16, player: usize) -> () {
+    pub fn set_holder(card: &mut u16, holder: usize) -> () {
         *card &= 0x00ff;
-        *card |= (player << 8) as u16;
+        *card |= (holder << 8) as u16;
     }
 
     pub fn set_rank(card: &mut u16, rank: usize) -> () {
@@ -57,7 +56,7 @@ pub mod deck {
             for rank in 0..config::NUMBER_OF_RANKS {
                 let card_index = suit * config::NUMBER_OF_RANKS + rank;
 
-                card::clear_player(&mut game.deck[card_index]);
+                card::set_holder(&mut game.deck[card_index], card::PILE_DRAW);
                 card::set_rank(&mut game.deck[card_index], rank);
                 card::set_suit(&mut game.deck[card_index], suit);
             }
@@ -68,7 +67,9 @@ pub mod deck {
         Ok(())
     }
 
-    pub fn assign_players(game: &mut Game) -> () {
+    pub fn assign_holders(game: &mut Game) -> () {
+        card::set_holder(&mut game.deck[0], card::PILE_DISCARD);
+
         let mut card_index = 1;
 
         for player_index in 0..config::PLAYER_LIMIT {
@@ -76,7 +77,7 @@ pub mod deck {
 
             if player.is_some() {
                 for _ in 0..config::CARDS_PER_HAND {
-                    card::set_player(&mut game.deck[card_index], player_index);
+                    card::set_holder(&mut game.deck[card_index], player_index);
 
                     card_index += 1;
                 }
@@ -92,7 +93,7 @@ pub mod deck {
     }
 
     pub fn find_player(card: u16) -> Result<usize> {
-        let player_index = card::get_player(card);
+        let player_index = card::get_holder(card);
 
         if player_index < config::PLAYER_LIMIT {
             Ok(player_index)
@@ -179,7 +180,7 @@ pub mod game {
 
             game.current_card = card_index as u8;
 
-            card::clear_player(&mut game.deck[card_index]);
+            card::set_holder(&mut game.deck[card_index], card::PILE_DISCARD);
 
             Ok(())
         }
@@ -191,10 +192,10 @@ pub mod game {
         let card_index = game
             .deck
             .iter()
-            .position(|&candidate| candidate != current_card && !card::has_player(candidate))
+            .position(|&candidate| candidate != current_card && card::can_draw(candidate))
             .ok_or(error::Code::NotFound)?;
 
-        card::set_player(&mut game.deck[card_index], game.current_player as usize);
+        card::set_holder(&mut game.deck[card_index], game.current_player as usize);
 
         Ok(())
     }
@@ -488,7 +489,7 @@ pub mod tschain_sepp {
         // Start the game.
 
         deck::assign_cards(game, context.accounts.signer.key)?;
-        deck::assign_players(game);
+        deck::assign_holders(game);
 
         game.status = Status::Started;
 

@@ -7,7 +7,7 @@ export function showError(message: String): void {
 const Notifications = ({ position }: ErrorProps) => <Toaster
   containerStyle={{
     right: '24px',
-    top: '80px',
+    bottom: '40px',
   }}
   position={position}
   toastOptions={{
