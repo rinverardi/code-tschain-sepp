@@ -24,6 +24,8 @@ const PlayingHand = ({
 }: PlayingHandProps) => {
   const cards = deck.filter((candidate) => derivePlayer(candidate) == player);
 
+  cards.sort((left, right) => (left & 0x00ff) - (right & 0x0ff));
+
   return <div className="hand">
     {cards.map((card, card_index) => <PlayingCard
       canPlay={canPlay}
