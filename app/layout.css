@@ -327,23 +327,17 @@ p {
     margin: 16px 0;
   }
 
-  #discard-pile {
-    left: 50%;
-    margin-left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  #draw-pile {
-    margin-right: 8px;
-    right: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
   .pile {
-    position: absolute;
+    float: left;
+    margin: 0 8px;
     text-align: center;
+  }
+
+  #piles {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
   }
 
   .player {

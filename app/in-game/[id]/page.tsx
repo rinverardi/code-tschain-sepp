@@ -6,7 +6,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import DiscardPile from "@tschain-sepp/components/discard_pile";
-import DrawPile from "@tschain-sepp/components/draw_pile";
+import DrawPile, { isDrawPileEmpty } from "@tschain-sepp/components/draw_pile";
 
 import {
   deriveAddress,
@@ -102,11 +102,13 @@ const Page = () => {
 
     <div className="content--in-game" id="in-game">
       {game && <>
-        <DrawPile
-          canPlay={me == game.currentPlayer}
-          onDraw={handleDraw} />
+        <div id="piles">
+          {isDrawPileEmpty(game) || <DrawPile
+            canPlay={me == game.currentPlayer}
+            onDraw={handleDraw} />}
 
-        <DiscardPile card={game.deck[game.currentCard]} />
+          <DiscardPile card={game.deck[game.currentCard]} />
+        </div>
 
         <Player
           canPlay={me == game.currentPlayer && me == 0}
