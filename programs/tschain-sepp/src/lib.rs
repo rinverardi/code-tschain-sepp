@@ -170,6 +170,10 @@ pub mod game {
         Ok(())
     }
 
+    pub fn count_players(game: &mut Game) -> usize {
+        game.players.iter().filter(|candidate| candidate.is_some()).count()
+    }
+
     pub fn discard_card(card: u16, game: &mut Game) -> Result<()> {
         let current_card = game.deck[game.current_card as usize];
 
@@ -184,15 +188,16 @@ pub mod game {
             game.current_card = card_index as u8;
 
             card::set_holder(&mut game.deck[card_index], card::PILE_DISCARD);
-            game::next_player(game);
 
-            if card::get_rank(card) == card::RANK_SEVEN {
-                game::draw_card(game).ok();
-                game::draw_card(game).ok();
-            }
-
-            if card::get_rank(card) == card::RANK_EIGHT {
+            if !game::handle_game_over(game) {
                 game::next_player(game);
+
+                if card::get_rank(card) == card::RANK_SEVEN {
+                    game::draw_card(game).ok();
+                    game::draw_card(game).ok();
+                } else if card::get_rank(card) == card::RANK_EIGHT {
+                    game::next_player(game);
+                }
             }
 
             Ok(())
@@ -224,6 +229,23 @@ pub mod game {
         game.players
             .iter()
             .any(|player| player.as_ref() == Some(key))
+    }
+
+    pub fn handle_game_over(game: &mut Game) -> bool {
+        let is_game_over = game
+            .deck
+            .iter()
+            .find(|&candidate| card::get_holder(*candidate) == game.current_player as usize)
+            .is_none();
+
+        if is_game_over {
+            msg!("The game {} is over");
+
+            game.status = Status::Ended;
+            game.winner = game.players[game.current_player as usize];
+        }
+
+        return is_game_over;
     }
 
     pub fn next_player(game: &mut Game) -> () {
@@ -388,6 +410,16 @@ pub mod tschain_sepp {
         // Discard the card.
 
         game::discard_card(card, game)?;
+
+        // Return the winnings to the winner.
+
+        if game.status == Status::Ended {
+            stake::give(
+                &game.to_account_info(),
+                &context.accounts.signer,
+                game::count_players(game) as u64 * game.stake,
+            )?;
+        }
 
         Ok(())
     }
