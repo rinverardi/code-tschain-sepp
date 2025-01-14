@@ -19,8 +19,8 @@ import Notifications, {
   showError
 } from "@tschain-sepp/components/notification";
 
-import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 import PlayingCard from "@tschain-sepp/components/playing_card";
+import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
 
