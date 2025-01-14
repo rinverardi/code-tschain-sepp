@@ -178,10 +178,6 @@ p {
   margin: 16px 0;
 }
 
-.player {
-  min-width: 200px;
-}
-
 .player__indicator {
   color: var(--red);
 }
@@ -202,7 +198,6 @@ p {
   background: var(--white);
   display: none;
   left: 0;
-  opacity: 0.9;
   position: absolute;
   top: 0;
   bottom: 0;
