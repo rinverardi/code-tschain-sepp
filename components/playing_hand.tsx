@@ -1,13 +1,14 @@
 "use client";
 
+import { PILE_DISCARD, PILE_DRAW } from "@tschain-sepp/components/game_account";
 import PlayingCard from "@tschain-sepp/components/playing_card";
 
 function derivePlayer(card: number): number {
-  const player = card >> 8;
+  const holder = card >> 8;
 
-  if (player < 4) {
-    return player;
-  } else if (player == 0xff) {
+  if (holder < 4) {
+    return holder;
+  } else if (holder == PILE_DISCARD || holder == PILE_DRAW) {
     return null;
   }
 
