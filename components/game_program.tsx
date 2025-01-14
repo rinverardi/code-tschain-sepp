@@ -11,7 +11,7 @@ import { toggleProgress } from "@tschain-sepp/components/progress";
 import IDL from "@tschain-sepp/idl/tschain_sepp.json";
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
-const STAKE = new BN(LAMPORTS_PER_SOL / 1000);
+const STAKE = new BN(LAMPORTS_PER_SOL / 100);
 
 export async function callAbortGame(program: Program<TschainSepp>, id: string) {
   toggleProgress(true);
