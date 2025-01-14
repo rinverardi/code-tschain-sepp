@@ -17,14 +17,16 @@ const Page = () => {
     router.push("rules");
   }
 
-  return <div className="content--pre-game" id="content">
-    <h1>Tschain Sepp</h1>
-    <div>
-      <button onClick={handleCreate}>Create a Game</button>
-      <button onClick={handleJoin}>Join a Game</button>
-      <button onClick={handleRead}>Read the Rules</button>
+  return (
+    <div className="content--pre-game" id="content">
+      <h1>Tschain Sepp</h1>
+      <div>
+        <button onClick={handleCreate}>Create a Game</button>
+        <button onClick={handleJoin}>Join a Game</button>
+        <button onClick={handleRead}>Read the Rules</button>
+      </div>
     </div>
-  </div>;
+  );
 };
 
 export default Page;

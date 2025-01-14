@@ -11,7 +11,7 @@ import DrawPile, { isDrawPileEmpty } from "@tschain-sepp/components/draw_pile";
 import {
   deriveAddress,
   fetchGame,
-  watchGame
+  watchGame,
 } from "@tschain-sepp/components/game_account";
 
 import {
@@ -19,13 +19,13 @@ import {
   callDiscardCard,
   callDrawCard,
   callSkipTurn,
-  makeProgram
+  makeProgram,
 } from "@tschain-sepp/components/game_program";
 
 import { inputId, outputId } from "@tschain-sepp/components/id";
 
 import Notifications, {
-  showError
+  showError,
 } from "@tschain-sepp/components/notification";
 
 import Player from "@tschain-sepp/components/player";
@@ -74,7 +74,9 @@ const Page = () => {
   }
 
   function handleDiscard(card: number): void {
-    callDiscardCard(program, id, card).catch(() => showError("Cannot discard the card!"));
+    callDiscardCard(program, id, card).catch(() =>
+      showError("Cannot discard the card!")
+    );
   }
 
   function handleDraw(): void {
@@ -97,61 +99,72 @@ const Page = () => {
     }
   }
 
-  return <>
-    <Notifications position="bottom-center" />
+  return (
+    <>
+      <Notifications position="bottom-center" />
 
-    <div className="content--in-game" id="in-game">
-      {game && <>
-        <div id="piles">
-          {isDrawPileEmpty(game) || <DrawPile
-            canPlay={me == game.currentPlayer}
-            onDraw={handleDraw} />}
+      <div className="content--in-game" id="in-game">
+        {game && (
+          <>
+            <div id="piles">
+              {isDrawPileEmpty(game) || (
+                <DrawPile
+                  canPlay={me == game.currentPlayer}
+                  onDraw={handleDraw}
+                />
+              )}
 
-          <DiscardPile card={game.deck[game.currentCard]} />
-        </div>
+              <DiscardPile card={game.deck[game.currentCard]} />
+            </div>
 
-        <Player
-          canPlay={me == game.currentPlayer && me == 0}
-          canSee={me == 0}
-          game={game}
-          me={me}
-          onAbort={handleAbort}
-          onDiscard={handleDiscard}
-          onSkip={handleSkip}
-          slot={0} />
+            <Player
+              canPlay={me == game.currentPlayer && me == 0}
+              canSee={me == 0}
+              game={game}
+              me={me}
+              onAbort={handleAbort}
+              onDiscard={handleDiscard}
+              onSkip={handleSkip}
+              slot={0}
+            />
 
-        <Player
-          canPlay={me == game.currentPlayer && me == 1}
-          canSee={me == 1}
-          game={game}
-          me={me}
-          onAbort={null}
-          onDiscard={handleDiscard}
-          onSkip={handleSkip}
-          slot={1} />
+            <Player
+              canPlay={me == game.currentPlayer && me == 1}
+              canSee={me == 1}
+              game={game}
+              me={me}
+              onAbort={null}
+              onDiscard={handleDiscard}
+              onSkip={handleSkip}
+              slot={1}
+            />
 
-        <Player
-          canPlay={me == game.currentPlayer && me == 2}
-          canSee={me == 2}
-          game={game}
-          me={me}
-          onAbort={null}
-          onDiscard={handleDiscard}
-          onSkip={handleSkip}
-          slot={2} />
+            <Player
+              canPlay={me == game.currentPlayer && me == 2}
+              canSee={me == 2}
+              game={game}
+              me={me}
+              onAbort={null}
+              onDiscard={handleDiscard}
+              onSkip={handleSkip}
+              slot={2}
+            />
 
-        <Player
-          canPlay={me == game.currentPlayer && me == 3}
-          canSee={me == 3}
-          game={game}
-          me={me}
-          onAbort={null}
-          onDiscard={handleDiscard}
-          onSkip={handleSkip}
-          slot={3} />
-      </>}
-    </div>
-  </>;
+            <Player
+              canPlay={me == game.currentPlayer && me == 3}
+              canSee={me == 3}
+              game={game}
+              me={me}
+              onAbort={null}
+              onDiscard={handleDiscard}
+              onSkip={handleSkip}
+              slot={3}
+            />
+          </>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default Page;

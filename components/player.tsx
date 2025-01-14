@@ -8,17 +8,25 @@ type GameAccount = IdlAccounts<TschainSepp>["game"];
 export function deriveLabel(game: GameAccount, slot: number): string {
   if (game.players[slot] == null) {
     switch (slot) {
-      case 0: return "No First Player";
-      case 1: return "No Second Player";
-      case 2: return "No Third Player";
-      case 3: return "No Fourth Player";
+      case 0:
+        return "No First Player";
+      case 1:
+        return "No Second Player";
+      case 2:
+        return "No Third Player";
+      case 3:
+        return "No Fourth Player";
     }
   } else {
     switch (slot) {
-      case 0: return "Player One";
-      case 1: return "Player Two";
-      case 2: return "Player Three";
-      case 3: return "Player Four";
+      case 0:
+        return "Player One";
+      case 1:
+        return "Player Two";
+      case 2:
+        return "Player Three";
+      case 3:
+        return "Player Four";
     }
   }
 
@@ -33,38 +41,53 @@ const Player = ({
   onAbort,
   onDiscard,
   onSkip,
-  slot
+  slot,
 }: PlayerProps) => {
   const canAbort = me == 0 && me == slot;
 
-  return <div className="player" id={"player" + slot}>
-    {game.currentPlayer == slot &&
-      <span className="player__indicator player__indicator--left" />}
+  return (
+    <div className="player" id={"player" + slot}>
+      {game.currentPlayer == slot && (
+        <span className="player__indicator player__indicator--left" />
+      )}
 
-    <label>{deriveLabel(game, slot)}</label>
+      <label>{deriveLabel(game, slot)}</label>
 
-    {game.currentPlayer == slot &&
-      <span className="player__indicator player__indicator--right" />}
+      {game.currentPlayer == slot && (
+        <span className="player__indicator player__indicator--right" />
+      )}
 
-    {game.players[slot] && <>
-      <PlayingHand
-        canPlay={canPlay}
-        canSee={canSee}
-        deck={game.deck}
-        onDiscard={canPlay ? onDiscard : null}
-        player={slot} />
+      {game.players[slot] && (
+        <>
+          <PlayingHand
+            canPlay={canPlay}
+            canSee={canSee}
+            deck={game.deck}
+            onDiscard={canPlay ? onDiscard : null}
+            player={slot}
+          />
 
-      {canAbort && <a href="" onClick={onAbort}>Abort</a>}
-      {canPlay && <a href="" onClick={onSkip}>Skip</a>}
-    </>}
-  </div>;
-}
+          {canAbort && (
+            <a href="" onClick={onAbort}>
+              Abort
+            </a>
+          )}
+          {canPlay && (
+            <a href="" onClick={onSkip}>
+              Skip
+            </a>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
 
 type PlayerProps = {
   canPlay: boolean;
   canSee: boolean;
   game: GameAccount;
-  me: number,
+  me: number;
   onAbort: (event: MouseEvent<HTMLAnchorElement>) => void;
   onDiscard: (card: number) => void;
   onSkip: (event: MouseEvent<HTMLAnchorElement>) => void;

@@ -8,20 +8,22 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 import "./layout.css";
 
-const Layout = ({ children }: LayoutProps) => <html lang="en">
-  <body>
-    <SolanaProvider>
-      <div id="wallet">
-        <SolanaButton />
-        <SolanaBalance />
+const Layout = ({ children }: LayoutProps) => (
+  <html lang="en">
+    <body>
+      <SolanaProvider>
+        <div id="wallet">
+          <SolanaButton />
+          <SolanaBalance />
+        </div>
+        {children}
+      </SolanaProvider>
+      <div id="progress">
+        <div id="progress__indicator" />
       </div>
-      {children}
-    </SolanaProvider>
-    <div id="progress">
-      <div id="progress__indicator" />
-    </div>
-  </body>
-</html>;
+    </body>
+  </html>
+);
 
 export default Layout;
 

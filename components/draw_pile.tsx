@@ -9,14 +9,11 @@ type GameAccount = IdlAccounts<TschainSepp>["game"];
 
 export function isDrawPileEmpty(game: GameAccount): boolean {
   return game.deck
-    .map((candidate) => ((candidate & 0xff00) >> 8))
+    .map((candidate) => (candidate & 0xff00) >> 8)
     .every((candidate) => candidate != PILE_DRAW);
 }
 
-const DrawPile = ({
-  canPlay,
-  onDraw
-}: DrawPileProps) =>
+const DrawPile = ({ canPlay, onDraw }: DrawPileProps) => (
   <div className="pile" id="draw-pile">
     <label>Draw</label>
 
@@ -24,8 +21,10 @@ const DrawPile = ({
       canPlay={canPlay}
       canSee={false}
       card={NaN}
-      onClick={canPlay && onDraw} />
-  </div>;
+      onClick={canPlay && onDraw}
+    />
+  </div>
+);
 
 type DrawPileProps = {
   canPlay: boolean;

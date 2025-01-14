@@ -13,10 +13,10 @@ const SolanaBalance = () => {
     if (publicKey) {
       const subscription = connection.onAccountChange(
         publicKey,
-        updatedAccountInfo => {
-          setBalance(updatedAccountInfo.lamports)
+        (updatedAccountInfo) => {
+          setBalance(updatedAccountInfo.lamports);
         },
-        { commitment: "confirmed" },
+        { commitment: "confirmed" }
       );
 
       connection.getAccountInfo(publicKey).then((info) => {
@@ -27,15 +27,17 @@ const SolanaBalance = () => {
 
       return () => {
         connection.removeAccountChangeListener(subscription);
-      }
+      };
     } else {
       setBalance(-1);
     }
   }, [publicKey]);
 
-  return balance < 0
-    ? <></>
-    : <output>{balance / LAMPORTS_PER_SOL} SOL</output>;
+  return balance < 0 ? (
+    <></>
+  ) : (
+    <output>{balance / LAMPORTS_PER_SOL} SOL</output>
+  );
 };
 
 export default SolanaBalance;

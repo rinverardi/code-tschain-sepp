@@ -4,7 +4,7 @@ import { makeAnchorProvider } from "@tschain-sepp/components/anchor";
 
 import {
   deriveAddress,
-  fetchGame
+  fetchGame,
 } from "@tschain-sepp/components/game_account";
 
 import { toggleProgress } from "@tschain-sepp/components/progress";
@@ -34,7 +34,10 @@ export async function callAbortGame(program: Program<TschainSepp>, id: string) {
   }
 }
 
-export async function callCreateGame(program: Program<TschainSepp>, id: string) {
+export async function callCreateGame(
+  program: Program<TschainSepp>,
+  id: string
+) {
   toggleProgress(true);
 
   try {
@@ -44,7 +47,11 @@ export async function callCreateGame(program: Program<TschainSepp>, id: string) 
   }
 }
 
-export async function callDiscardCard(program: Program<TschainSepp>, id: string, card: number) {
+export async function callDiscardCard(
+  program: Program<TschainSepp>,
+  id: string,
+  card: number
+) {
   toggleProgress(true);
 
   try {

@@ -4,26 +4,29 @@ export function showError(message: String): void {
   toast.error(message);
 }
 
-const Notifications = ({ position }: ErrorProps) => <Toaster
-  containerStyle={{
-    right: '24px',
-    bottom: '40px',
-  }}
-  position={position}
-  toastOptions={{
-    error: {
-      style: {
-        background: '#c44',
-        color: '#fff',
+const Notifications = ({ position }: ErrorProps) => (
+  <Toaster
+    containerStyle={{
+      right: "24px",
+      bottom: "40px",
+    }}
+    position={position}
+    toastOptions={{
+      error: {
+        style: {
+          background: "#c44",
+          color: "#fff",
+        },
       },
-    },
-    icon: null,
-    style: {
-      borderRadius: '4px',
-      boxShadow: 'none',
-      padding: '8px'
-    }
-  }} />;
+      icon: null,
+      style: {
+        borderRadius: "4px",
+        boxShadow: "none",
+        padding: "8px",
+      },
+    }}
+  />
+);
 
 type ErrorProps = {
   position: ToastPosition;

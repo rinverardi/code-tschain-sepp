@@ -6,13 +6,13 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import {
   callJoinGame,
-  makeProgram
+  makeProgram,
 } from "@tschain-sepp/components/game_program";
 
 import { inputId, outputId } from "@tschain-sepp/components/id";
 
 import Notifications, {
-  showError
+  showError,
 } from "@tschain-sepp/components/notification";
 
 const Page = () => {
@@ -49,29 +49,30 @@ const Page = () => {
       .catch(() => showError("Cannot join the game!"));
   }
 
-  return <>
-    <Notifications position="bottom-right" />
+  return (
+    <>
+      <Notifications position="bottom-right" />
 
-    <div className="content--pre-game" id="content">
-      <h1>Join a Game</h1>
-      <p>
-        Enter a valid game identifier and join the game.
-      </p>
-      <div>
-        <label>Game ID:</label>
+      <div className="content--pre-game" id="content">
+        <h1>Join a Game</h1>
+        <p>Enter a valid game identifier and join the game.</p>
+        <div>
+          <label>Game ID:</label>
 
-        <input
-          autoFocus
-          maxLength={8}
-          onChange={handleChange}
-          value={outputId(id)} />
+          <input
+            autoFocus
+            maxLength={8}
+            onChange={handleChange}
+            value={outputId(id)}
+          />
+        </div>
+        <div>
+          <button onClick={handleJoin}>Join</button>
+          <button onClick={handleCancel}>Cancel</button>
+        </div>
       </div>
-      <div>
-        <button onClick={handleJoin}>Join</button>
-        <button onClick={handleCancel}>Cancel</button>
-      </div>
-    </div>
-  </>;
+    </>
+  );
 };
 
 export default Page;

@@ -20,27 +20,32 @@ const PlayingHand = ({
   canSee,
   deck,
   onDiscard,
-  player
+  player,
 }: PlayingHandProps) => {
   const cards = deck.filter((candidate) => derivePlayer(candidate) == player);
 
   cards.sort((left, right) => (left & 0x00ff) - (right & 0x0ff));
 
-  return <div className="hand">
-    {cards.map((card, card_index) => <PlayingCard
-      canPlay={canPlay}
-      canSee={canSee}
-      card={card}
-      key={card_index}
-      onClick={onDiscard} />)}
-  </div>;
-}
+  return (
+    <div className="hand">
+      {cards.map((card, card_index) => (
+        <PlayingCard
+          canPlay={canPlay}
+          canSee={canSee}
+          card={card}
+          key={card_index}
+          onClick={onDiscard}
+        />
+      ))}
+    </div>
+  );
+};
 type PlayingHandProps = {
   canPlay: boolean;
   canSee: boolean;
   deck: number[];
-  onDiscard: (card: number) => void,
-  player: number
+  onDiscard: (card: number) => void;
+  player: number;
 };
 
 export default PlayingHand;

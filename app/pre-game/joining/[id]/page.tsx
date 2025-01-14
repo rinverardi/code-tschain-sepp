@@ -8,14 +8,14 @@ import { useEffect, useState } from "react";
 import {
   deriveAddress,
   fetchGame,
-  watchGame
+  watchGame,
 } from "@tschain-sepp/components/game_account";
 
 import { makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId, outputId, outputIdOr } from "@tschain-sepp/components/id";
 
 import Notifications, {
-  showError
+  showError,
 } from "@tschain-sepp/components/notification";
 
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
@@ -48,39 +48,43 @@ const Page = () => {
     } else if (game.status.started) {
       router.push("../../../in-game/" + outputId(id));
     } else {
-      const players = game.players.map((player) => player ? player.toString() : "");
+      const players = game.players.map((player) =>
+        player ? player.toString() : ""
+      );
 
       setPlayers(players);
     }
   }
 
-  return <>
-    <Notifications position="bottom-right" />
+  return (
+    <>
+      <Notifications position="bottom-right" />
 
-    <div className="content--pre-game" id="content">
-      <h1>Waiting for Oponnents</h1>
-      <div>
-        <label>Game Identifier:</label>
-        <output>{outputId(id)}</output>
+      <div className="content--pre-game" id="content">
+        <h1>Waiting for Oponnents</h1>
+        <div>
+          <label>Game Identifier:</label>
+          <output>{outputId(id)}</output>
+        </div>
+        <div>
+          <label>Player One:</label>
+          <output>{outputIdOr(players[0], "Empty Slot")}</output>
+        </div>
+        <div>
+          <label>Player Two:</label>
+          <output>{outputIdOr(players[1], "Empty Slot")}</output>
+        </div>
+        <div>
+          <label>Player Three:</label>
+          <output>{outputIdOr(players[2], "Empty Slot")}</output>
+        </div>
+        <div>
+          <label>Player Four:</label>
+          <output>{outputIdOr(players[3], "Empty Slot")}</output>
+        </div>
       </div>
-      <div>
-        <label>Player One:</label>
-        <output>{outputIdOr(players[0], "Empty Slot")}</output>
-      </div>
-      <div>
-        <label>Player Two:</label>
-        <output>{outputIdOr(players[1], "Empty Slot")}</output>
-      </div>
-      <div>
-        <label>Player Three:</label>
-        <output>{outputIdOr(players[2], "Empty Slot")}</output>
-      </div>
-      <div>
-        <label>Player Four:</label>
-        <output>{outputIdOr(players[3], "Empty Slot")}</output>
-      </div>
-    </div>
-  </>
+    </>
+  );
 };
 
 export default Page;

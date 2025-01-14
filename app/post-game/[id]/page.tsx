@@ -5,10 +5,19 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { deriveAddress, fetchGame } from "@tschain-sepp/components/game_account";
+
+import {
+  deriveAddress,
+  fetchGame,
+} from "@tschain-sepp/components/game_account";
+
 import { makeProgram } from "@tschain-sepp/components/game_program";
 import { inputId, outputId } from "@tschain-sepp/components/id";
-import Notifications, { showError } from "@tschain-sepp/components/notification";
+
+import Notifications, {
+  showError,
+} from "@tschain-sepp/components/notification";
+
 import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
@@ -20,7 +29,7 @@ function calculateLoss(game: GameAccount): number {
 function calculateWin(game: GameAccount): number {
   const losers = game.players.filter((that) => that != null).length - 1;
 
-  return game.stake.toNumber() * losers / LAMPORTS_PER_SOL;
+  return (game.stake.toNumber() * losers) / LAMPORTS_PER_SOL;
 }
 
 const Page = () => {
@@ -42,31 +51,34 @@ const Page = () => {
   const isLoser = game && publicKey && !game.winner.equals(publicKey);
   const isWinner = game && publicKey && game.winner.equals(publicKey);
 
-  return <div className="content--post-game" id="content">
-    <Notifications position="bottom-right" />
+  return (
+    <div className="content--post-game" id="content">
+      <Notifications position="bottom-right" />
 
-    {isLoser || isWinner || <h1>Game Over</h1>}
+      {isLoser || isWinner || <h1>Game Over</h1>}
 
-    {isLoser && <>
-      <h1>Defeat!</h1>
-      <p>
-        Close, but no cigar, {outputId(publicKey.toBase58())}!
-      </p>
-      <p>
-        You just lost {calculateLoss(game)} SOL to {outputId(game.winner.toBase58())}.
-      </p>
-    </>}
+      {isLoser && (
+        <>
+          <h1>Defeat!</h1>
+          <p>Close, but no cigar, {outputId(publicKey.toBase58())}!</p>
+          <p>
+            You just lost {calculateLoss(game)} SOL to{" "}
+            {outputId(game.winner.toBase58())}.
+          </p>
+        </>
+      )}
 
-    {isWinner && <>
-      <h1>Victory!</h1>
-      <p>
-        Winner winner, chicken dinner, {outputId(game.winner.toBase58())}!
-      </p>
-      <p>
-        You just won {calculateWin(game)} SOL.
-      </p>
-    </>}
-  </div>;
-}
+      {isWinner && (
+        <>
+          <h1>Victory!</h1>
+          <p>
+            Winner winner, chicken dinner, {outputId(game.winner.toBase58())}!
+          </p>
+          <p>You just won {calculateWin(game)} SOL.</p>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default Page;
