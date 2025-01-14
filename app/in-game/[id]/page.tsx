@@ -16,6 +16,7 @@ import {
 import {
   callAbortGame,
   callDiscardCard,
+  callDrawCard,
   callSkipTurn,
   makeProgram
 } from "@tschain-sepp/components/game_program";
@@ -61,6 +62,10 @@ const Page = () => {
     callDiscardCard(program, id, card).catch(() => showError("Cannot discard the card!"));
   }
 
+  function handleDraw(): void {
+    callDrawCard(program, id).catch(() => showError("Cannot draw the card!"));
+  }
+
   function handleSkip(event: MouseEvent<HTMLAnchorElement>): void {
     event.preventDefault();
 
@@ -82,7 +87,10 @@ const Page = () => {
 
     <div className="content--in-game" id="in-game">
       {game && <>
-        <DrawPile available={game.currentPlayer == me} />
+        <DrawPile
+          available={game.currentPlayer == me}
+          onDraw={handleDraw} />
+
         <DiscardPile card={game.deck[game.currentCard]} />
 
         <Player

@@ -19,6 +19,10 @@ pub mod card {
         ((card & 0x00f0) >> 4) as usize
     }
 
+    pub fn has_player(card: u16) -> bool {
+        (card & 0xff00) != 0xff00
+    }
+
     pub fn set_player(card: &mut u16, player: usize) -> () {
         *card &= 0x00ff;
         *card |= (player << 8) as u16;
@@ -136,6 +140,9 @@ pub mod error {
         #[msg("Not authorized")]
         NotAuthorized,
 
+        #[msg("Not found")]
+        NotFound,
+
         #[msg("Unknown card")]
         UnknownCard,
 
@@ -176,6 +183,20 @@ pub mod game {
 
             Ok(())
         }
+    }
+
+    pub fn draw_card(game: &mut Game) -> Result<()> {
+        let current_card = game.deck[game.current_card as usize];
+
+        let card_index = game
+            .deck
+            .iter()
+            .position(|&candidate| candidate != current_card && !card::has_player(candidate))
+            .ok_or(error::Code::NotFound)?;
+
+        card::set_player(&mut game.deck[card_index], game.current_player as usize);
+
+        Ok(())
     }
 
     pub fn find_player(game: &Game, key: &Pubkey) -> Result<usize> {
@@ -358,6 +379,32 @@ pub mod tschain_sepp {
         Ok(())
     }
 
+    pub fn draw_card(context: Context<DrawCard>, id: String) -> Result<()> {
+        msg!("Drawing card in game {}.", id);
+
+        let game: &mut Account<'_, Game> = &mut context.accounts.game;
+
+        // Authorize the signer.
+
+        let player_index = game::find_player(game, context.accounts.signer.key)?;
+
+        if player_index != game.current_player as usize {
+            return Err(error::Code::NotAuthorized.into());
+        }
+
+        // Check the game status.
+
+        if !matches!(game.status, Status::Started) {
+            return Err(error::Code::IllegalStatus.into());
+        }
+
+        // Draw the card.
+
+        game::draw_card(game)?;
+
+        Ok(())
+    }
+
     pub fn join_game(context: Context<JoinGame>, id: String) -> Result<()> {
         msg!("Joining game {}.", id);
 
@@ -491,6 +538,19 @@ pub mod tschain_sepp {
     #[derive(Accounts)]
     #[instruction(id: String)]
     pub struct DiscardCard<'info> {
+        #[account(
+            mut,
+            seeds = ["game".as_ref(), id.as_ref()],
+            bump,
+        )]
+        pub game: Account<'info, Game>,
+
+        pub signer: Signer<'info>,
+    }
+
+    #[derive(Accounts)]
+    #[instruction(id: String)]
+    pub struct DrawCard<'info> {
         #[account(
             mut,
             seeds = ["game".as_ref(), id.as_ref()],

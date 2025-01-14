@@ -53,17 +53,21 @@ function makeFigures(rank: string, suit: string): JSX.Element {
   }
 }
 
-const PlayingCard = ({ available, card, onDiscard }: PlayingCardProps) => {
+const PlayingCard = ({ available, card, onDiscard, onDraw }: PlayingCardProps) => {
   const availability = available ? "card--available " : "";
 
   function handleClick() {
     if (onDiscard) {
       onDiscard(card);
     }
+
+    if (onDraw) {
+      onDraw();
+    }
   }
 
   if (isNaN(card)) {
-    return <div className={`card ${availability} card--facedown`}/>;
+    return <div className={`card ${availability} card--facedown`} onClick={handleClick} />;
   } else {
     const rank = deriveRank(card);
     const [suit, suitColor] = deriveSuit(card);
@@ -90,6 +94,7 @@ type PlayingCardProps = {
   available: boolean;
   card: number;
   onDiscard: (card: number) => void;
+  onDraw: () => void;
 };
 
 export default PlayingCard;

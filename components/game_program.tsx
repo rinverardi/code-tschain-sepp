@@ -1,5 +1,5 @@
 import { BN, Program } from "@coral-xyz/anchor";
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { makeAnchorProvider } from "@tschain-sepp/components/anchor";
 
 import {
@@ -49,6 +49,16 @@ export async function callDiscardCard(program: Program<TschainSepp>, id: string,
 
   try {
     await program.methods.discardCard(id, card).rpc();
+  } finally {
+    toggleProgress(false);
+  }
+}
+
+export async function callDrawCard(program: Program<TschainSepp>, id: string) {
+  toggleProgress(true);
+
+  try {
+    await program.methods.drawCard(id).rpc();
   } finally {
     toggleProgress(false);
   }
