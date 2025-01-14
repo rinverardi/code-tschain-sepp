@@ -65,9 +65,7 @@ pub mod deck {
             }
         }
 
-        shuffle(game, key)?;
-
-        Ok(())
+        shuffle(game, key)
     }
 
     pub fn assign_holders(game: &mut Game) -> () {
@@ -298,9 +296,7 @@ pub mod stake {
             },
         );
 
-        anchor_lang::system_program::transfer(context, amount)?;
-
-        Ok(())
+        anchor_lang::system_program::transfer(context, amount)
     }
 }
 
@@ -379,9 +375,7 @@ pub mod tschain_sepp {
             &context.accounts.signer,
             &game.to_account_info(),
             stake,
-        )?;
-
-        Ok(())
+        )
     }
 
     pub fn discard_card(context: Context<DiscardCard>, id: String, card: u16) -> Result<()> {
@@ -445,9 +439,7 @@ pub mod tschain_sepp {
 
         // Draw the card.
 
-        game::draw_card(game)?;
-
-        Ok(())
+        game::draw_card(game)
     }
 
     pub fn join_game(context: Context<JoinGame>, id: String) -> Result<()> {
@@ -482,9 +474,7 @@ pub mod tschain_sepp {
             &context.accounts.signer,
             &game.to_account_info(),
             game.stake,
-        )?;
-
-        Ok(())
+        )
     }
 
     pub fn skip_turn(context: Context<SkipTurn>, id: String) -> Result<()> {
