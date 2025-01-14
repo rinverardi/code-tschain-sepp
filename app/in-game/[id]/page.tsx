@@ -33,7 +33,7 @@ import { TschainSepp } from "@tschain-sepp/types/tschain_sepp";
 
 type GameAccount = IdlAccounts<TschainSepp>["game"];
 
-export function getMe(game: GameAccount, publicKey: PublicKey): number {
+function getMe(game: GameAccount, publicKey: PublicKey): number {
   if (!publicKey) {
     return NaN;
   }

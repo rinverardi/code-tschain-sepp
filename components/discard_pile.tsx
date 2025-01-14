@@ -10,8 +10,7 @@ const DiscardPile = ({ card }: DiscardPileProps) =>
       canPlay={false}
       canSee={true}
       card={card}
-      onDiscard={null}
-      onDraw={null} />
+      onClick={null} />
   </div>;
 
 type DiscardPileProps = {
