@@ -57,7 +57,7 @@ const Page = () => {
         <h1>Join a Game</h1>
         <p>Enter a valid game identifier and join the game.</p>
         <div>
-          <label>Game ID:</label>
+          <label>Game Identifier:</label>
 
           <input
             autoFocus
