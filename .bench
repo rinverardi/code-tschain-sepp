@@ -1,12 +1,12 @@
-setEnvironmentVariable AVM_HOME ~/.avm
-setEnvironmentVariable CARGO_HOME ~/.cargo
-setEnvironmentVariable NODE_OPTIONS --no-deprecation
-setEnvironmentVariable SOLANA_HOME ~/.local/share/solana/install/active_release
+set_env AVM_HOME "$HOME/.avm"
+set_env CARGO_HOME "$HOME/.cargo"
+set_env NODE_OPTIONS --no-deprecation
+set_env SOLANA_HOME "$HOME/.local/share/solana/install/active_release"
 
-appendEnvironmentVariable PATH : "$AVM_HOME/bin"
-appendEnvironmentVariable PATH : "$CARGO_HOME/bin"
-appendEnvironmentVariable PATH : "$SOLANA_HOME/bin"
+append_env PATH : "$AVM_HOME/bin"
+append_env PATH : "$CARGO_HOME/bin"
+append_env PATH : "$SOLANA_HOME/bin"
 
-checkDirectory $AVM_HOME
-checkDirectory $CARGO_HOME
-checkDirectory $SOLANA_HOME
+check_dir "$AVM_HOME"
+check_dir "$CARGO_HOME"
+check_dir "$SOLANA_HOME"
